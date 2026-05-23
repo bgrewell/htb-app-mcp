@@ -1,0 +1,57 @@
+name: Endpoint documentation
+description: Document a single HackTheBox API endpoint in openapi.yaml
+title: "[endpoint-doc] <METHOD> <path>"
+labels: ["type/endpoint-doc"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue per endpoint. Close when the endpoint is documented in `openapi/openapi.yaml` with an example response.
+  - type: input
+    id: method
+    attributes:
+      label: HTTP method
+      placeholder: GET
+    validations:
+      required: true
+  - type: input
+    id: path
+    attributes:
+      label: Path
+      placeholder: /api/v4/machine/list
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        - machines
+        - challenges
+        - sherlocks
+        - profile
+        - rankings
+        - tracks
+        - pro-labs
+        - fortresses
+        - seasons
+        - vpn
+        - search
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Auth requirements, pagination, known quirks, source (Postman / capture / docs).
+    validations:
+      required: false
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Done when
+      options:
+        - label: Request + response schema added to openapi.yaml
+        - label: At least one example response (from a scrubbed capture)
+        - label: operationId set in camelCase
+        - label: redocly lint clean

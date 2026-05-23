@@ -1,0 +1,57 @@
+name: MCP tool
+description: Add an MCP tool that wraps one or more documented endpoints
+title: "[mcp-tool] <tool_name>"
+labels: ["type/mcp-tool"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        One issue per tool. Tool names are `snake_case` and prefixed by the domain (e.g. `machines_list`, `challenges_info`). Close when the tool is registered, tested, and documented.
+  - type: input
+    id: name
+    attributes:
+      label: Tool name
+      placeholder: machines_list
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        - machines
+        - challenges
+        - sherlocks
+        - profile
+        - rankings
+        - tracks
+        - pro-labs
+        - fortresses
+        - seasons
+        - vpn
+        - search
+    validations:
+      required: true
+  - type: textarea
+    id: backing
+    attributes:
+      label: Backing endpoint(s)
+      description: List the openapi.yaml operationIds this tool wraps. Link the endpoint-doc issues.
+    validations:
+      required: true
+  - type: textarea
+    id: shape
+    attributes:
+      label: Tool input shape
+      description: Parameter names, types, required vs optional, defaults. Justify any new parameter against the tool-count discipline.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Done when
+      options:
+        - label: Tool registered under internal/tools/<domain>/
+        - label: Unit tests using fixtures
+        - label: Listed in docs/users/<domain>.md
+        - label: Active tool count updated in docs/developers/tool-count.md

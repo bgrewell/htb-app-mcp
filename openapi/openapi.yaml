@@ -1,0 +1,124 @@
+openapi: 3.1.0
+info:
+  title: HackTheBox main-app API (unofficial)
+  version: 0.0.0
+  summary: Reverse-engineered OpenAPI 3.1 spec for the HackTheBox main application.
+  description: |
+    Community-maintained description of the HackTheBox main-app HTTP API,
+    serving the labs at https://app.hackthebox.com.
+
+    This spec is **unofficial** and not affiliated with or endorsed by HackTheBox.
+    It is reverse-engineered from authenticated browser sessions, prior community
+    work, and the official "App Token" feature that HackTheBox provides to enable
+    third-party tooling.
+
+    Endpoints are documented in domain-scoped phases. See the project README for
+    the phase roadmap.
+  contact:
+    name: htb-app-mcp
+    url: https://github.com/bgrewell/htb-app-mcp
+  license:
+    name: MIT
+    url: https://github.com/bgrewell/htb-app-mcp/blob/main/LICENSE
+servers:
+  - url: https://labs.hackthebox.com/api/v4
+    description: HackTheBox main-app API v4
+security:
+  - bearerAuth: []
+tags:
+  - name: machines
+    description: Boxes — list, info, lifecycle, flags, ownership.
+  - name: challenges
+    description: Self-contained challenges across categories.
+  - name: sherlocks
+    description: Investigation scenarios.
+  - name: profile
+    description: Current user profile, settings, app tokens.
+  - name: rankings
+    description: Global and team rankings, leaderboards.
+  - name: tracks
+    description: Curated learning tracks.
+  - name: pro-labs
+    description: Pro Labs — multi-host scenarios.
+  - name: fortresses
+    description: Fortress scenarios.
+  - name: seasons
+    description: Seasonal competitions.
+  - name: vpn
+    description: VPN servers and connection configs.
+  - name: search
+    description: Global search across the platform.
+paths: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        HackTheBox App Token, generated at
+        https://app.hackthebox.com/profile/settings under "App Tokens".
+        Send as `Authorization: Bearer <token>`.
+  schemas:
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string
+          description: Human-readable error message.
+        errors:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: Field-level validation errors, when applicable.
+      example:
+        message: Unauthenticated.
+    Pagination:
+      type: object
+      description: Common pagination envelope used by list endpoints.
+      properties:
+        current_page:
+          type: integer
+          minimum: 1
+        per_page:
+          type: integer
+          minimum: 1
+        total:
+          type: integer
+          minimum: 0
+        last_page:
+          type: integer
+          minimum: 1
+  responses:
+    Unauthorized:
+      description: Missing or invalid bearer token.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: Unauthenticated.
+    NotFound:
+      description: Resource does not exist or is not visible to the caller.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: Not found.
+    RateLimited:
+      description: Too many requests. Honor the `Retry-After` header when present.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+          description: Seconds to wait before retrying.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            message: Too Many Attempts.

@@ -1,0 +1,57 @@
+name: Bug report
+description: Something in htb-app-mcp does not work as documented
+title: "[bug] <short description>"
+labels: ["type/bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `htb-app-mcp --version`, or commit SHA.
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Affected domain (if known)
+      options:
+        - unknown / cross-cutting
+        - machines
+        - challenges
+        - sherlocks
+        - profile
+        - rankings
+        - tracks
+        - pro-labs
+        - fortresses
+        - seasons
+        - vpn
+        - search
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction steps
+      description: MCP client, --enable flags, tool call payload, redacted of any token.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Run with HTB_LOG_LEVEL=debug if possible. Scrub any token before pasting.
+    validations:
+      required: false

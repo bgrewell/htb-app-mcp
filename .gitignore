@@ -1,0 +1,41 @@
+# Secrets — NEVER commit
+.env
+.env.local
+*.env.local
+*.env.*.local
+
+# Go build artifacts
+/bin/
+/dist/
+/htb-app-mcp
+*.exe
+*.exe~
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Go workspace
+go.work
+go.work.sum
+
+# Vendored deps (we don't vendor)
+/vendor/
+
+# Captured API fixtures with potentially sensitive data
+# (per-fixture allowlists go in scripts/capture/fixtures/.gitkeep)
+scripts/capture/raw/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated docs site (built by workflow, not checked in)
+/site/_build/
