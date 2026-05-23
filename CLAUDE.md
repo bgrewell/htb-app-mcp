@@ -59,9 +59,12 @@ Work is delivered in phases, one HackTheBox domain at a time:
 ### OpenAPI
 
 - `openapi/openapi.yaml` is canonical. If the spec and the client disagree, the spec wins and the client is fixed.
+- **Source of truth is our own captures, full stop.** Third-party Postman collections, community docs, and prior MCP repos are hints — they tell you which endpoints exist, not what their shape is. Every operation we document must be backed by a fresh capture under `scripts/capture/fixtures/<domain>/`. Do not copy schemas from external sources.
+- Each endpoint gets at least one re-capture at a later date to confirm shape stability.
 - One tag per domain. Every operation has `operationId` in `camelCase` matching the Go client method name.
-- Every operation has at least one example response, sourced from `scripts/capture/fixtures/<domain>/`.
+- Every operation has at least one example response, sourced from a captured fixture.
 - Run `redocly lint openapi/openapi.yaml` before committing changes to the spec.
+- See `docs/developers/openapi-conventions.md` for the full convention set.
 
 ### MCP tools
 

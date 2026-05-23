@@ -82,14 +82,38 @@ many phases and many contributors.
 on every PR. Configuration lives in `.redocly.yaml` (added when the
 first lint warning needs taming).
 
+## Source of truth: capture, do not import
+
+Every operation in `openapi.yaml` describes behavior we have personally
+verified against the live API. We do not copy schemas from third-party
+Postman collections, blog posts, or other community sources, even when
+they are well-maintained. Those sources are *hints* — they suggest
+which endpoints exist and roughly what they do. They are not evidence
+of current shape.
+
+The chain of trust for every endpoint is:
+
+1. A real captured request/response under `scripts/capture/fixtures/<domain>/`.
+2. At least one **re-capture** at a later date confirming the response
+   shape is stable (or documenting that it is not).
+3. Manual exploration of edge cases (empty result, not-found, forbidden,
+   pagination boundary) with captures backing each one.
+
+If we cannot capture an endpoint, we do not document it. "I saw it in a
+Postman collection" is not grounds for adding a path entry.
+
 ## Anti-patterns
 
-- Do not document an endpoint you have not personally captured or
-  cross-referenced against the Propolisa Postman collection.
-- Do not infer response fields. If a field appears in the captured
-  payload, document it; if not, leave it out.
+- Do not document an endpoint without a captured fixture of your own.
+  External collections are unverified.
+- Do not infer response fields. If a field appears in *your* captured
+  payload, document it; if not, leave it out — even if another source
+  claims the field exists.
 - Do not use `anyOf` / `oneOf` to paper over response variation without
   evidence from at least two distinct captures of the divergent
   responses.
+- Do not mark a field as required without a capture proving it is
+  always present across the relevant states (auth, list-empty, list-
+  populated, etc).
 - Do not commit examples that contain identifying values — see
   `docs/api/capture.md` for the scrub workflow.
