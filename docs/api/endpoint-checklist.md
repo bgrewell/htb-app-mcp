@@ -22,15 +22,15 @@ and verified before it lands in `openapi/openapi.yaml`.
 
 | Path | Method | Status | Source | Notes |
 |------|--------|--------|--------|-------|
-| `/machine/active` | GET | captured | propolisa, noaslr, ours | Singular: returns the user's currently-spawned machine. Propolisa's shape is wrong (claims it lists machines). |
-| `/machine/recommended` | GET | captured | propolisa, ours | Returns `{card1, card2, state[]}` — two recommendation cards, not a list. |
-| `/machine/profile/{name}` | GET | captured | ours | Lookup by name (not id). Returns `{info: {...}}`. |
-| `/machine/walkthroughs/{id}` | GET | captured | ours | Walkthroughs for a machine. |
+| `/machine/active` | GET | documented | propolisa, noaslr, ours | Singular: returns the user's currently-spawned machine. Propolisa's shape is wrong (claims it lists machines). |
+| `/machine/recommended` | GET | documented | propolisa, ours | Returns `{card1, card2, state[]}` — two recommendation cards, not a list. |
+| `/machine/profile/{name}` | GET | documented | ours | Lookup by name (not id). Returns `{info: {...}}`. |
+| `/machine/walkthroughs/{id}` | GET | documented | ours | Walkthroughs for a machine. |
 | `/machine/walkthroughs/language/list` | GET | probe | ours (raw only) | Walkthrough language enum. Captured but not yet in first PR. |
 | `/machine/walkthrough/random` | GET | probe | ours (raw only) | Random walkthrough across all machines. |
-| `/machine/writeup/{id}` | GET | captured | ours | Official writeup for a machine. |
+| `/machine/writeup/{id}` | GET | captured | ours | Official writeup — `application/pdf`, 1.26 MB. Needs download-URL-plus-metadata wrapper before exposing as a tool. |
 | `/machine/graph/matrix/{id}` | GET | probe | ours (raw only) | Stats matrix. Captured but not yet in first PR. |
-| `/review/machine/{id}/paginated` | GET | captured | ours | Reviews. Laravel paginator: `{data, meta, links, average, count}`. |
+| `/review/machine/{id}/paginated` | GET | documented | ours | Reviews. Laravel paginator: `{data, meta, links, average, count}`. |
 | `/machines/{id}/tasks` | GET | probe | ours (raw only) | Plural-prefix route. Purpose unclear without more probing. |
 | `/machines/{id}/adventure` | GET | probe | ours (raw only) | Plural-prefix route. Purpose unclear without more probing. |
 | `/machine/list` | GET | probe | propolisa | Active-list per Propolisa. Has not been observed in our captures — Propolisa may be stale. Probe to confirm whether it still exists. |
