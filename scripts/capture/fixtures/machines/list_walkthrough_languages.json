@@ -1,0 +1,731 @@
+{
+  "request": {
+    "body": null,
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.5",
+      "authorization": "<redacted>",
+      "origin": "https://app.hackthebox.com",
+      "referer": "https://app.hackthebox.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "te": "trailers",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    },
+    "method": "GET",
+    "path": "/api/v4/machine/walkthroughs/language/list",
+    "url": "https://labs.hackthebox.com/api/v4/machine/walkthroughs/language/list"
+  },
+  "response": {
+    "body": {
+      "info": [
+        {
+          "full_name": "Abkhazian",
+          "id": 1,
+          "short_name": "AB"
+        },
+        {
+          "full_name": "Afar",
+          "id": 2,
+          "short_name": "AA"
+        },
+        {
+          "full_name": "Afrikaans",
+          "id": 3,
+          "short_name": "AF"
+        },
+        {
+          "full_name": "Albanian",
+          "id": 4,
+          "short_name": "SQ"
+        },
+        {
+          "full_name": "Amharic",
+          "id": 5,
+          "short_name": "AM"
+        },
+        {
+          "full_name": "Arabic",
+          "id": 6,
+          "short_name": "AR"
+        },
+        {
+          "full_name": "Armenian",
+          "id": 7,
+          "short_name": "HY"
+        },
+        {
+          "full_name": "Assamese",
+          "id": 8,
+          "short_name": "AS"
+        },
+        {
+          "full_name": "Aymara",
+          "id": 9,
+          "short_name": "AY"
+        },
+        {
+          "full_name": "Azerbaijani",
+          "id": 10,
+          "short_name": "AZ"
+        },
+        {
+          "full_name": "Bashkir",
+          "id": 11,
+          "short_name": "BA"
+        },
+        {
+          "full_name": "Basque",
+          "id": 12,
+          "short_name": "EU"
+        },
+        {
+          "full_name": "Bengali",
+          "id": 13,
+          "short_name": "BN"
+        },
+        {
+          "full_name": "Bhutani",
+          "id": 14,
+          "short_name": "DZ"
+        },
+        {
+          "full_name": "Bihari",
+          "id": 15,
+          "short_name": "BH"
+        },
+        {
+          "full_name": "Bislama",
+          "id": 16,
+          "short_name": "BI"
+        },
+        {
+          "full_name": "Breton",
+          "id": 17,
+          "short_name": "BR"
+        },
+        {
+          "full_name": "Bulgarian",
+          "id": 18,
+          "short_name": "BG"
+        },
+        {
+          "full_name": "Burmese",
+          "id": 19,
+          "short_name": "MY"
+        },
+        {
+          "full_name": "Byelorussian",
+          "id": 20,
+          "short_name": "BE"
+        },
+        {
+          "full_name": "Cambodian",
+          "id": 21,
+          "short_name": "KM"
+        },
+        {
+          "full_name": "Catalan",
+          "id": 22,
+          "short_name": "CA"
+        },
+        {
+          "full_name": "Chinese",
+          "id": 23,
+          "short_name": "ZH"
+        },
+        {
+          "full_name": "Corsican",
+          "id": 24,
+          "short_name": "CO"
+        },
+        {
+          "full_name": "Croatian",
+          "id": 25,
+          "short_name": "HR"
+        },
+        {
+          "full_name": "Czech",
+          "id": 26,
+          "short_name": "CS"
+        },
+        {
+          "full_name": "Danish",
+          "id": 27,
+          "short_name": "DA"
+        },
+        {
+          "full_name": "Dutch",
+          "id": 28,
+          "short_name": "NL"
+        },
+        {
+          "full_name": "English",
+          "id": 29,
+          "short_name": "EN"
+        },
+        {
+          "full_name": "Esperanto",
+          "id": 30,
+          "short_name": "EO"
+        },
+        {
+          "full_name": "Estonian",
+          "id": 31,
+          "short_name": "ET"
+        },
+        {
+          "full_name": "Faeroese",
+          "id": 32,
+          "short_name": "FO"
+        },
+        {
+          "full_name": "Fiji",
+          "id": 33,
+          "short_name": "FJ"
+        },
+        {
+          "full_name": "Finnish",
+          "id": 34,
+          "short_name": "FI"
+        },
+        {
+          "full_name": "French",
+          "id": 35,
+          "short_name": "FR"
+        },
+        {
+          "full_name": "Frisian",
+          "id": 36,
+          "short_name": "FY"
+        },
+        {
+          "full_name": "Gaelic",
+          "id": 37,
+          "short_name": "GD"
+        },
+        {
+          "full_name": "Galician",
+          "id": 38,
+          "short_name": "GL"
+        },
+        {
+          "full_name": "Georgian",
+          "id": 39,
+          "short_name": "KA"
+        },
+        {
+          "full_name": "German",
+          "id": 40,
+          "short_name": "DE"
+        },
+        {
+          "full_name": "Greek",
+          "id": 41,
+          "short_name": "EL"
+        },
+        {
+          "full_name": "Greenlandic",
+          "id": 42,
+          "short_name": "KL"
+        },
+        {
+          "full_name": "Guarani",
+          "id": 43,
+          "short_name": "GN"
+        },
+        {
+          "full_name": "Gujarati",
+          "id": 44,
+          "short_name": "GU"
+        },
+        {
+          "full_name": "Hausa",
+          "id": 45,
+          "short_name": "HA"
+        },
+        {
+          "full_name": "Hebrew",
+          "id": 46,
+          "short_name": "IW"
+        },
+        {
+          "full_name": "Hindi",
+          "id": 47,
+          "short_name": "HI"
+        },
+        {
+          "full_name": "Hungarian",
+          "id": 48,
+          "short_name": "HU"
+        },
+        {
+          "full_name": "Icelandic",
+          "id": 49,
+          "short_name": "IS"
+        },
+        {
+          "full_name": "Indonesian",
+          "id": 50,
+          "short_name": "IN"
+        },
+        {
+          "full_name": "Interlingua",
+          "id": 51,
+          "short_name": "IA"
+        },
+        {
+          "full_name": "Interlingue",
+          "id": 52,
+          "short_name": "IE"
+        },
+        {
+          "full_name": "Inupiak",
+          "id": 53,
+          "short_name": "IK"
+        },
+        {
+          "full_name": "Irish",
+          "id": 54,
+          "short_name": "GA"
+        },
+        {
+          "full_name": "Italian",
+          "id": 55,
+          "short_name": "IT"
+        },
+        {
+          "full_name": "Japanese",
+          "id": 56,
+          "short_name": "JA"
+        },
+        {
+          "full_name": "Javanese",
+          "id": 57,
+          "short_name": "JW"
+        },
+        {
+          "full_name": "Kannada",
+          "id": 58,
+          "short_name": "KN"
+        },
+        {
+          "full_name": "Kashmiri",
+          "id": 59,
+          "short_name": "KS"
+        },
+        {
+          "full_name": "Kazakh",
+          "id": 60,
+          "short_name": "KK"
+        },
+        {
+          "full_name": "Kinyarwanda",
+          "id": 61,
+          "short_name": "RW"
+        },
+        {
+          "full_name": "Kirghiz",
+          "id": 62,
+          "short_name": "KY"
+        },
+        {
+          "full_name": "Kirundi",
+          "id": 63,
+          "short_name": "RN"
+        },
+        {
+          "full_name": "Korean",
+          "id": 64,
+          "short_name": "KO"
+        },
+        {
+          "full_name": "Kurdish",
+          "id": 65,
+          "short_name": "KU"
+        },
+        {
+          "full_name": "Laothian",
+          "id": 66,
+          "short_name": "LO"
+        },
+        {
+          "full_name": "Latin",
+          "id": 67,
+          "short_name": "LA"
+        },
+        {
+          "full_name": "Latvian",
+          "id": 68,
+          "short_name": "LV"
+        },
+        {
+          "full_name": "Lingala",
+          "id": 69,
+          "short_name": "LN"
+        },
+        {
+          "full_name": "Lithuanian",
+          "id": 70,
+          "short_name": "LT"
+        },
+        {
+          "full_name": "Macedonian",
+          "id": 71,
+          "short_name": "MK"
+        },
+        {
+          "full_name": "Malagasy",
+          "id": 72,
+          "short_name": "MG"
+        },
+        {
+          "full_name": "Malay",
+          "id": 73,
+          "short_name": "MS"
+        },
+        {
+          "full_name": "Malayalam",
+          "id": 74,
+          "short_name": "ML"
+        },
+        {
+          "full_name": "Maltese",
+          "id": 75,
+          "short_name": "MT"
+        },
+        {
+          "full_name": "Maori",
+          "id": 76,
+          "short_name": "MI"
+        },
+        {
+          "full_name": "Marathi",
+          "id": 77,
+          "short_name": "MR"
+        },
+        {
+          "full_name": "Moldavian",
+          "id": 78,
+          "short_name": "MO"
+        },
+        {
+          "full_name": "Mongolian",
+          "id": 79,
+          "short_name": "MN"
+        },
+        {
+          "full_name": "Nauru",
+          "id": 80,
+          "short_name": "NA"
+        },
+        {
+          "full_name": "Nepali",
+          "id": 81,
+          "short_name": "NE"
+        },
+        {
+          "full_name": "Norwegian",
+          "id": 82,
+          "short_name": "NO"
+        },
+        {
+          "full_name": "Occitan",
+          "id": 83,
+          "short_name": "OC"
+        },
+        {
+          "full_name": "Oriya",
+          "id": 84,
+          "short_name": "OR"
+        },
+        {
+          "full_name": "Oromo",
+          "id": 85,
+          "short_name": "OM"
+        },
+        {
+          "full_name": "Pashto",
+          "id": 86,
+          "short_name": "PS"
+        },
+        {
+          "full_name": "Persian",
+          "id": 87,
+          "short_name": "FA"
+        },
+        {
+          "full_name": "Polish",
+          "id": 88,
+          "short_name": "PL"
+        },
+        {
+          "full_name": "Portuguese",
+          "id": 89,
+          "short_name": "PT"
+        },
+        {
+          "full_name": "Punjabi",
+          "id": 90,
+          "short_name": "PA"
+        },
+        {
+          "full_name": "Quechua",
+          "id": 91,
+          "short_name": "QU"
+        },
+        {
+          "full_name": "Rhaeto-Romance",
+          "id": 92,
+          "short_name": "RM"
+        },
+        {
+          "full_name": "Romanian",
+          "id": 93,
+          "short_name": "RO"
+        },
+        {
+          "full_name": "Russian",
+          "id": 94,
+          "short_name": "RU"
+        },
+        {
+          "full_name": "Samoan",
+          "id": 95,
+          "short_name": "SM"
+        },
+        {
+          "full_name": "Sangro",
+          "id": 96,
+          "short_name": "SG"
+        },
+        {
+          "full_name": "Sanskrit",
+          "id": 97,
+          "short_name": "SA"
+        },
+        {
+          "full_name": "Serbian",
+          "id": 98,
+          "short_name": "SR"
+        },
+        {
+          "full_name": "Serbo-Croatian",
+          "id": 99,
+          "short_name": "SH"
+        },
+        {
+          "full_name": "Sesotho",
+          "id": 100,
+          "short_name": "ST"
+        },
+        {
+          "full_name": "Setswana",
+          "id": 101,
+          "short_name": "TN"
+        },
+        {
+          "full_name": "Shona",
+          "id": 102,
+          "short_name": "SN"
+        },
+        {
+          "full_name": "Sindhi",
+          "id": 103,
+          "short_name": "SD"
+        },
+        {
+          "full_name": "Singhalese",
+          "id": 104,
+          "short_name": "SI"
+        },
+        {
+          "full_name": "Siswati",
+          "id": 105,
+          "short_name": "SS"
+        },
+        {
+          "full_name": "Slovak",
+          "id": 106,
+          "short_name": "SK"
+        },
+        {
+          "full_name": "Slovenian",
+          "id": 107,
+          "short_name": "SL"
+        },
+        {
+          "full_name": "Somali",
+          "id": 108,
+          "short_name": "SO"
+        },
+        {
+          "full_name": "Spanish",
+          "id": 109,
+          "short_name": "ES"
+        },
+        {
+          "full_name": "Sudanese",
+          "id": 110,
+          "short_name": "SU"
+        },
+        {
+          "full_name": "Swahili",
+          "id": 111,
+          "short_name": "SW"
+        },
+        {
+          "full_name": "Swedish",
+          "id": 112,
+          "short_name": "SV"
+        },
+        {
+          "full_name": "Tagalog",
+          "id": 113,
+          "short_name": "TL"
+        },
+        {
+          "full_name": "Tajik",
+          "id": 114,
+          "short_name": "TG"
+        },
+        {
+          "full_name": "Tamil",
+          "id": 115,
+          "short_name": "TA"
+        },
+        {
+          "full_name": "Tatar",
+          "id": 116,
+          "short_name": "TT"
+        },
+        {
+          "full_name": "Tegulu",
+          "id": 117,
+          "short_name": "TE"
+        },
+        {
+          "full_name": "Thai",
+          "id": 118,
+          "short_name": "TH"
+        },
+        {
+          "full_name": "Tibetan",
+          "id": 119,
+          "short_name": "BO"
+        },
+        {
+          "full_name": "Tigrinya",
+          "id": 120,
+          "short_name": "TI"
+        },
+        {
+          "full_name": "Tonga",
+          "id": 121,
+          "short_name": "TO"
+        },
+        {
+          "full_name": "Tsonga",
+          "id": 122,
+          "short_name": "TS"
+        },
+        {
+          "full_name": "Turkish",
+          "id": 123,
+          "short_name": "TR"
+        },
+        {
+          "full_name": "Turkmen",
+          "id": 124,
+          "short_name": "TK"
+        },
+        {
+          "full_name": "Twi",
+          "id": 125,
+          "short_name": "TW"
+        },
+        {
+          "full_name": "Ukrainian",
+          "id": 126,
+          "short_name": "UK"
+        },
+        {
+          "full_name": "Urdu",
+          "id": 127,
+          "short_name": "UR"
+        },
+        {
+          "full_name": "Uzbek",
+          "id": 128,
+          "short_name": "UZ"
+        },
+        {
+          "full_name": "Vietnamese",
+          "id": 129,
+          "short_name": "VI"
+        },
+        {
+          "full_name": "Volapuk",
+          "id": 130,
+          "short_name": "VO"
+        },
+        {
+          "full_name": "Welsh",
+          "id": 131,
+          "short_name": "CY"
+        },
+        {
+          "full_name": "Wolof",
+          "id": 132,
+          "short_name": "WO"
+        },
+        {
+          "full_name": "Xhosa",
+          "id": 133,
+          "short_name": "XH"
+        },
+        {
+          "full_name": "Yiddish",
+          "id": 134,
+          "short_name": "JI"
+        },
+        {
+          "full_name": "Yoruba",
+          "id": 135,
+          "short_name": "YO"
+        },
+        {
+          "full_name": "Zulu",
+          "id": 136,
+          "short_name": "ZU"
+        }
+      ]
+    },
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "https://app.hackthebox.com",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "no-cache, private",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a00cc5fadd4553d9-PDX",
+      "content-encoding": "gzip",
+      "content-type": "application/json",
+      "date": "Sun, 24 May 2026 13:51:08 GMT",
+      "server": "cloudflare",
+      "set-cookie": "<redacted>",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "vary": "accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "x-htb-request-id": "a1db4161-6cf9-4d57-8b10-366e93cf71f5",
+      "x-ratelimit-limit": "30",
+      "x-ratelimit-remaining": "25",
+      "x-xss-protection": "1; mode=block"
+    },
+    "status": 200
+  }
+}
