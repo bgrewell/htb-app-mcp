@@ -48,7 +48,168 @@ tags:
     description: VPN servers and connection configs.
   - name: search
     description: Global search across the platform.
-paths: {}
+paths:
+  /machine/active:
+    get:
+      tags: [machines]
+      operationId: getActiveSpawn
+      summary: Get the caller's currently-spawned machine
+      description: |
+        Returns a single object describing the machine the caller currently
+        has spawned, or an empty `info` payload when none is active. Despite
+        the path's name this is **not** a listing endpoint — it is the
+        caller's spawn-status.
+      responses:
+        '200':
+          description: Spawn status.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [info]
+                properties:
+                  info:
+                    oneOf:
+                      - $ref: '#/components/schemas/SpawnInfo'
+                      - type: 'null'
+              examples:
+                spawned:
+                  summary: A machine is currently spawned
+                  value:
+                    info:
+                      id: 900
+                      name: Reactor
+                      type: Release Arena
+                      lab_server: dedivip_lab
+                      vpn_server_id: 289
+                      ip: 10.129.2.134
+                      avatar: /avatars/56868ca419111fc0721393a2ffa0cefe.png
+                      isSpawning: false
+                      expires_at: "2026-05-24 19:21:01"
+                      tier_id: null
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/recommended:
+    get:
+      tags: [machines]
+      operationId: getRecommendedMachines
+      summary: Get the caller's two recommended-machine cards
+      description: |
+        Returns two recommendation slots (`card1`, `card2`) plus a `state`
+        array describing each card's category (e.g. `seasonal`,
+        `staff_pick`, `recommended`). Not a flat list.
+      responses:
+        '200':
+          description: Recommendations.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendations'
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/profile/{name}:
+    get:
+      tags: [machines]
+      operationId: getMachineInfo
+      summary: Get machine info by human-readable name
+      description: |
+        Lookup is by the machine's display name (e.g. `Cap`), not by
+        numeric id. The returned object's `id` field is the canonical
+        numeric id used by walkthroughs/reviews/lifecycle endpoints.
+      parameters:
+        - in: path
+          name: name
+          required: true
+          schema: { type: string }
+          description: Machine display name, case-sensitive as shown on the site.
+          example: Cap
+      responses:
+        '200':
+          description: Machine info.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [info]
+                properties:
+                  info: { $ref: '#/components/schemas/MachineInfo' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/walkthroughs/{id}:
+    get:
+      tags: [machines]
+      operationId: getMachineWalkthroughs
+      summary: Get walkthroughs metadata for a machine
+      description: |
+        Returns the official PDF writeup metadata, the official video
+        metadata, and a list of community-authored writeup links. Body is
+        wrapped in a `message` envelope (endpoint-specific — not the
+        common `info`/`data` envelopes).
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, format: int64 }
+          description: Numeric machine id (from `getMachineInfo`).
+      responses:
+        '200':
+          description: Walkthroughs metadata.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message: { $ref: '#/components/schemas/WalkthroughsBundle' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /review/machine/{id}/paginated:
+    get:
+      tags: [machines]
+      operationId: listMachineReviews
+      summary: List reviews for a machine, paginated
+      description: |
+        Laravel paginator envelope. The `per_page` and `page` query params
+        are standard Laravel pagination. The `sort_by[]` and `sort_type`
+        params are observed in the live UI; values beyond the example
+        below have not been confirmed.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, format: int64 }
+          description: Numeric machine id.
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1, default: 1 }
+        - in: query
+          name: per_page
+          schema: { type: integer, minimum: 1, default: 15 }
+        - in: query
+          name: sort_type
+          schema:
+            type: string
+            enum: [asc, desc]
+            default: desc
+        - in: query
+          name: sort_by[]
+          description: Repeat to sort by multiple fields. Observed value `created_at`.
+          schema:
+            type: array
+            items: { type: string }
+          style: form
+          explode: true
+      responses:
+        '200':
+          description: Page of reviews.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ReviewPage' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
 components:
   securitySchemes:
     bearerAuth:
@@ -78,20 +239,276 @@ components:
         message: Unauthenticated.
     Pagination:
       type: object
-      description: Common pagination envelope used by list endpoints.
+      description: |
+        Laravel paginator metadata block. Appears as `meta` on list
+        endpoints that paginate with the standard Laravel envelope.
       properties:
-        current_page:
-          type: integer
-          minimum: 1
-        per_page:
-          type: integer
-          minimum: 1
-        total:
-          type: integer
-          minimum: 0
-        last_page:
-          type: integer
-          minimum: 1
+        current_page: { type: integer, minimum: 1 }
+        per_page:     { type: integer, minimum: 1 }
+        from:         { type: integer, nullable: true }
+        to:           { type: integer, nullable: true }
+        total:        { type: integer, minimum: 0 }
+        last_page:    { type: integer, minimum: 1 }
+        path:         { type: string }
+        links:
+          type: array
+          description: Pre-rendered pagination link descriptors.
+          items:
+            type: object
+            properties:
+              active: { type: boolean }
+              label:  { type: string }
+              page:   { type: integer, nullable: true }
+              url:    { type: string, nullable: true }
+    PaginatorLinks:
+      type: object
+      description: Top-level `links` on a Laravel paginator response.
+      properties:
+        first: { type: string, nullable: true }
+        last:  { type: string, nullable: true }
+        next:  { type: string, nullable: true }
+        prev:  { type: string, nullable: true }
+    Maker:
+      type: object
+      description: Machine maker (community contributor who built the box).
+      required: [id]
+      properties:
+        id:          { type: integer, format: int64 }
+        name:        { type: string }
+        avatar:      { type: string }
+        isRespected: { type: boolean }
+        profile_url: { type: string, nullable: true }
+    BloodHolder:
+      type: object
+      description: User who claimed first user-blood or first root-blood on a machine.
+      properties:
+        blood_difference: { type: string, description: "Wall-time delta between release and blood, e.g. \"00H 02M 17S\"." }
+        created_at:       { type: string, format: date-time, nullable: true }
+        user:             { $ref: '#/components/schemas/UserRef' }
+    UserRef:
+      type: object
+      description: Minimal embedded user reference.
+      required: [id]
+      properties:
+        id:     { type: integer, format: int64 }
+        name:   { type: string }
+        avatar: { type: string, nullable: true }
+    FeedbackChart:
+      type: object
+      description: Histogram of user-submitted difficulty ratings.
+      properties:
+        counterCake:      { type: integer }
+        counterVeryEasy:  { type: integer }
+        counterEasy:      { type: integer }
+        counterTooEasy:   { type: integer }
+        counterMedium:    { type: integer }
+        counterBitHard:   { type: integer }
+        counterHard:      { type: integer }
+        counterTooHard:   { type: integer }
+        counterExHard:    { type: integer }
+        counterBrainFuck: { type: integer }
+    PlayInfo:
+      type: object
+      description: Per-caller play state for a machine.
+      properties:
+        isSpawned:           { type: boolean }
+        isSpawning:          { type: boolean }
+        isActive:            { type: boolean, nullable: true }
+        active_player_count: { type: integer, nullable: true }
+        expires_at:          { type: string, nullable: true }
+        life_remaining:      { type: integer, nullable: true, description: "Seconds remaining on the spawn timer." }
+    SpawnInfo:
+      type: object
+      description: |
+        The caller's currently-spawned machine, as returned by
+        `GET /machine/active`. Differs from `MachineInfo` — only spawn-
+        relevant fields are present.
+      required: [id, name]
+      properties:
+        id:            { type: integer, format: int64 }
+        name:          { type: string }
+        type:          { type: string, description: "Lab classification, e.g. \"Release Arena\"." }
+        lab_server:    { type: string, description: "Lab identifier, e.g. \"dedivip_lab\"." }
+        vpn_server_id: { type: integer, format: int64, nullable: true }
+        ip:            { type: string, nullable: true, description: "Spawned machine's lab IP." }
+        avatar:        { type: string }
+        isSpawning:    { type: boolean }
+        expires_at:    { type: string, nullable: true, description: "Wall-clock time the spawn will be torn down." }
+        tier_id:       { type: integer, nullable: true }
+    MachineInfo:
+      type: object
+      description: |
+        Full single-machine info as returned by `GET /machine/profile/{name}`.
+        Many fields are caller-relative (`authUser*`, `isTodo`, `ownRank`,
+        ...). Only `id` and `name` are guaranteed across all observed
+        captures; everything else is treated as optional pending more
+        captures.
+      required: [id, name]
+      properties:
+        id:                          { type: integer, format: int64 }
+        name:                        { type: string }
+        os:                          { type: string }
+        difficultyText:              { type: string, description: "Human-readable difficulty (Easy, Medium, Hard, Insane)." }
+        points:                      { type: integer }
+        static_points:               { type: integer, description: "Points awarded after retirement." }
+        experience_points:           { type: integer }
+        release:                     { type: string, format: date-time }
+        retired:                     { type: boolean }
+        active:                      { type: boolean }
+        free:                        { type: boolean, description: "Available without VIP." }
+        avatar:                      { type: string }
+        synopsis:                    { type: string }
+        ip:                          { type: string, nullable: true }
+        stars:                       { type: number, description: "Average review rating, 0-5." }
+        reviews_count:               { type: integer }
+        user_owns_count:             { type: integer }
+        root_owns_count:             { type: integer }
+        userBlood:                   { $ref: '#/components/schemas/BloodHolder' }
+        rootBlood:                   { $ref: '#/components/schemas/BloodHolder' }
+        botHasBlood:                 { type: boolean }
+        maker:                       { $ref: '#/components/schemas/Maker' }
+        maker2:                      { allOf: [{ $ref: '#/components/schemas/Maker' }], nullable: true }
+        playInfo:                    { $ref: '#/components/schemas/PlayInfo' }
+        feedbackForChart:            { $ref: '#/components/schemas/FeedbackChart' }
+        academy_modules:
+          type: array
+          description: HTB Academy modules related to the machine's techniques.
+          items:
+            type: object
+            additionalProperties: true
+        info_status:                 { type: string, nullable: true }
+        machinePwnedDate:            { type: string, nullable: true }
+        machine_mode:                { type: string, nullable: true }
+        season_id:                   { type: integer, nullable: true }
+        requiredSubscription:        { type: string, nullable: true }
+        priceTier:                   { type: integer }
+        start_mode:                  { type: string, description: "How the machine starts (e.g. \"spawn\")." }
+        isGuidedEnabled:             { type: boolean }
+        isSingleFlag:                { type: boolean }
+        isTodo:                      { type: boolean }
+        has_changelog:               { type: boolean }
+        can_access_walkthrough:      { type: boolean }
+        show_go_vip:                 { type: boolean }
+        show_go_vip_server:          { type: boolean }
+        sp_flag:                     { type: integer }
+        switchServerWarning:         { type: string, nullable: true }
+        recommended:                 { type: boolean }
+        ownRank:                     { type: integer }
+        authUserInUserOwns:          { type: boolean }
+        authUserInRootOwns:          { type: boolean }
+        authUserFirstUserTime:       { type: string, description: "Caller's time to user-own, e.g. \"3Y 8M 28D\"." }
+        authUserFirstRootTime:       { type: string }
+        authUserHasReviewed:         { type: boolean }
+        authUserHasSubmittedMatrix:  { type: boolean }
+        user_can_review:             { type: boolean }
+    RecommendationCard:
+      type: object
+      description: One recommendation slot. Field set varies by `typeCard`.
+      required: [id, name, typeCard]
+      properties:
+        id:                { type: integer, format: int64 }
+        name:              { type: string }
+        os:                { type: string }
+        difficultyText:    { type: string }
+        avatar:            { type: string }
+        points:            { type: integer }
+        release:           { type: string, format: date-time }
+        retired:           { type: integer, description: "0 = active, 1 = retired." }
+        retired_date:      { type: string, format: date-time, nullable: true }
+        typeCard:          { type: string, description: "Recommendation category, e.g. \"seasonal\", \"staff_pick\"." }
+        isTodo:            { type: boolean }
+        stars:             { type: integer }
+        root_owns_count:   { type: integer }
+        user_owns_count:   { type: integer }
+        authUserInUserOwns: { type: boolean }
+        authUserInRootOwns: { type: boolean }
+        maker:             { $ref: '#/components/schemas/Maker' }
+        maker2:            { allOf: [{ $ref: '#/components/schemas/Maker' }], nullable: true }
+        feedbackForChart:  { $ref: '#/components/schemas/FeedbackChart' }
+    Recommendations:
+      type: object
+      description: Response shape of `GET /machine/recommended`.
+      required: [card1, card2, state]
+      properties:
+        card1: { $ref: '#/components/schemas/RecommendationCard' }
+        card2: { $ref: '#/components/schemas/RecommendationCard' }
+        state:
+          type: array
+          items: { type: string }
+          description: One entry per card describing its category in the same order as card1/card2.
+    OfficialWriteup:
+      type: object
+      description: Metadata for the official PDF writeup of a machine.
+      properties:
+        filename:                      { type: string }
+        sha256:                        { type: string }
+        rating:                        { type: integer }
+        total_ratings:                 { type: integer }
+        threshold_for_display_reached: { type: integer }
+        likedByUser:                   { type: boolean, nullable: true }
+        dislikedByUser:                { type: boolean, nullable: true }
+    OfficialVideo:
+      type: object
+      description: Metadata for the official video walkthrough.
+      properties:
+        creator_id:     { type: integer, nullable: true }
+        creator_name:   { type: string, nullable: true }
+        creator_avatar: { type: string, nullable: true }
+        youtube_id:     { type: string, nullable: true }
+    CommunityWriteup:
+      type: object
+      description: One community-authored writeup link.
+      required: [id, url]
+      properties:
+        id:               { type: integer, format: int64 }
+        url:              { type: string }
+        rating:           { type: integer, description: "0-100 community rating." }
+        total_ratings:    { type: integer }
+        created_at:       { type: string, format: date-time }
+        language_code:    { type: string, nullable: true }
+        language_name:    { type: string, nullable: true }
+        liked_by_user:    { type: boolean, nullable: true }
+        disliked_by_user: { type: boolean, nullable: true }
+        user_id:          { type: integer, format: int64 }
+        user_name:        { type: string, description: "Public username of the writeup author." }
+        user_avatar:      { type: string, nullable: true }
+    WalkthroughsBundle:
+      type: object
+      description: Composite payload returned by `GET /machine/walkthroughs/{id}`.
+      properties:
+        official:     { $ref: '#/components/schemas/OfficialWriteup' }
+        video:        { $ref: '#/components/schemas/OfficialVideo' }
+        writeups:
+          type: array
+          items: { $ref: '#/components/schemas/CommunityWriteup' }
+        under_review:
+          type: array
+          nullable: true
+          items: { type: object, additionalProperties: true }
+    Review:
+      type: object
+      description: One user review of a machine.
+      required: [id]
+      properties:
+        id:         { type: integer, format: int64 }
+        stars:      { type: integer, minimum: 1, maximum: 5 }
+        message:    { type: string, nullable: true }
+        released:   { type: string, format: date-time }
+        helpful:    { type: integer, description: "Helpful-vote count." }
+        unhelpful:  { type: integer, description: "Unhelpful-vote count." }
+        user:       { $ref: '#/components/schemas/UserRef' }
+    ReviewPage:
+      type: object
+      description: Paginated review response for `GET /review/machine/{id}/paginated`.
+      required: [data, meta]
+      properties:
+        average: { type: number, description: "Average star rating across all reviews." }
+        count:   { type: integer, description: "Total review count across all pages." }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/Review' }
+        links: { $ref: '#/components/schemas/PaginatorLinks' }
+        meta:  { $ref: '#/components/schemas/Pagination' }
   responses:
     Unauthorized:
       description: Missing or invalid bearer token.
