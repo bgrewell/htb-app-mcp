@@ -49,7 +49,7 @@ Work is delivered in phases, one HackTheBox domain at a time:
 
 ### Go
 
-- Go 1.22+.
+- Go 1.25+ (required by `modelcontextprotocol/go-sdk`).
 - `gofmt` and `goimports` enforced via `golangci-lint`.
 - No `interface{}` / `any` where a typed struct would do.
 - Errors wrap with context: `fmt.Errorf("listing machines: %w", err)`. Never `return err` at API boundaries.
