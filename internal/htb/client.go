@@ -86,8 +86,6 @@ func New(cfg Config) (*Client, error) {
 	httpClient := cfg.HTTPClient
 	if httpClient == nil {
 		httpClient = &http.Client{Timeout: timeout}
-	} else if httpClient.Timeout == 0 {
-		// Don't mutate a caller-supplied client; fall through.
 	}
 
 	logger := cfg.Logger

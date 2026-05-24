@@ -50,13 +50,14 @@ func run(args []string) error {
 	)
 
 	fs.Usage = func() {
-		fmt.Fprintf(fs.Output(), "Usage: %s [flags]\n\nFlags:\n", fs.Name())
+		out := fs.Output()
+		_, _ = fmt.Fprintf(out, "Usage: %s [flags]\n\nFlags:\n", fs.Name())
 		fs.PrintDefaults()
-		fmt.Fprintln(fs.Output(), "\nEnvironment:")
-		fmt.Fprintln(fs.Output(), "  HTB_API_KEY        Required for a real run. App Token from HTB profile.")
-		fmt.Fprintln(fs.Output(), "  HTB_API_BASE_URL   Optional. Defaults to "+htb.DefaultBaseURL)
-		fmt.Fprintln(fs.Output(), "  HTB_HTTP_TIMEOUT   Optional. Per-request timeout in seconds (default 30).")
-		fmt.Fprintln(fs.Output(), "  HTB_LOG_LEVEL      Optional. debug|info|warn|error (default info).")
+		_, _ = fmt.Fprintln(out, "\nEnvironment:")
+		_, _ = fmt.Fprintln(out, "  HTB_API_KEY        Required for a real run. App Token from HTB profile.")
+		_, _ = fmt.Fprintln(out, "  HTB_API_BASE_URL   Optional. Defaults to "+htb.DefaultBaseURL)
+		_, _ = fmt.Fprintln(out, "  HTB_HTTP_TIMEOUT   Optional. Per-request timeout in seconds (default 30).")
+		_, _ = fmt.Fprintln(out, "  HTB_LOG_LEVEL      Optional. debug|info|warn|error (default info).")
 	}
 
 	if err := fs.Parse(args); err != nil {
