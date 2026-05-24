@@ -260,6 +260,74 @@ type PaginationMeta struct {
 	Path        string `json:"path,omitempty"`
 }
 
+// Language is one entry in the walkthrough-language enum.
+type Language struct {
+	ID        int64  `json:"id"`
+	FullName  string `json:"full_name"`
+	ShortName string `json:"short_name"`
+}
+
+// MachineRef is a minimal machine reference (id + display fields).
+type MachineRef struct {
+	ID     int64  `json:"id"`
+	Name   string `json:"name,omitempty"`
+	Avatar string `json:"avatar,omitempty"`
+}
+
+// MatrixScores is the five-axis radar block.
+type MatrixScores struct {
+	CTF    float64 `json:"ctf"`
+	Custom float64 `json:"custom"`
+	CVE    float64 `json:"cve"`
+	Enum   float64 `json:"enum"`
+	Real   float64 `json:"real"`
+}
+
+// GraphMatrix is the per-machine difficulty radar triple.
+type GraphMatrix struct {
+	Aggregate MatrixScores `json:"aggregate"`
+	Maker     MatrixScores `json:"maker"`
+	User      MatrixScores `json:"user"`
+}
+
+// KindRef is HTB's small {id, text} discriminator used in tasks and adventure.
+type KindRef struct {
+	ID   int    `json:"id"`
+	Text string `json:"text"`
+}
+
+// MachineTask is one guided-mode task.
+// SENSITIVITY: the Flag field contains the actual flag value once
+// the caller has completed the task; callers must treat it accordingly.
+type MachineTask struct {
+	ID             int64                    `json:"id"`
+	Title          string                   `json:"title,omitempty"`
+	Description    string                   `json:"description,omitempty"`
+	Hint           *string                  `json:"hint,omitempty"`
+	Flag           string                   `json:"flag,omitempty"`
+	MaskedFlag     string                   `json:"masked_flag,omitempty"`
+	Options        []map[string]interface{} `json:"options,omitempty"`
+	PrerequisiteID *int64                   `json:"prerequisite_id,omitempty"`
+	Completed      bool                     `json:"completed"`
+	TaskType       KindRef                  `json:"task_type"`
+	Type           KindRef                  `json:"type"`
+}
+
+// AdventureStep is one adventure-mode step.
+// Unlike MachineTask, the Flag field is a textual completion indicator
+// ("User flag owned"), not the flag value.
+type AdventureStep struct {
+	ID          *int64  `json:"id,omitempty"`
+	Title       string  `json:"title"`
+	Description *string `json:"description,omitempty"`
+	Hint        *string `json:"hint,omitempty"`
+	Flag        string  `json:"flag,omitempty"`
+	MaskedFlag  string  `json:"masked_flag,omitempty"`
+	FlagRating  int     `json:"flag_rating,omitempty"`
+	Completed   bool    `json:"completed"`
+	Type        KindRef `json:"type"`
+}
+
 // ReviewPage is the paginated review response.
 type ReviewPage struct {
 	Average float64        `json:"average"`
@@ -354,6 +422,110 @@ func (m *Client) ListReviews(ctx context.Context, machineID int64, opts ListRevi
 		return nil, err
 	}
 	return &out, nil
+}
+
+// ListWalkthroughLanguages returns the language enum used for walkthroughs.
+func (m *Client) ListWalkthroughLanguages(ctx context.Context) ([]Language, error) {
+	var env struct {
+		Info []Language `json:"info"`
+	}
+	if err := m.get(ctx, "machine/walkthroughs/language/list", nil, &env); err != nil {
+		return nil, err
+	}
+	return env.Info, nil
+}
+
+// GetRandomWalkthroughMachine returns a random machine that has community walkthroughs.
+func (m *Client) GetRandomWalkthroughMachine(ctx context.Context) (*MachineRef, error) {
+	var env struct {
+		Message MachineRef `json:"message"`
+	}
+	if err := m.get(ctx, "machine/walkthrough/random", nil, &env); err != nil {
+		return nil, err
+	}
+	return &env.Message, nil
+}
+
+// GetGraphMatrix returns the difficulty radar matrix for a machine.
+func (m *Client) GetGraphMatrix(ctx context.Context, machineID int64) (*GraphMatrix, error) {
+	if machineID <= 0 {
+		return nil, fmt.Errorf("machines: GetGraphMatrix: machineID must be positive")
+	}
+	var env struct {
+		Info GraphMatrix `json:"info"`
+	}
+	path := "machine/graph/matrix/" + strconv.FormatInt(machineID, 10)
+	if err := m.get(ctx, path, nil, &env); err != nil {
+		return nil, err
+	}
+	return &env.Info, nil
+}
+
+// ListTasks returns the guided-mode tasks for a machine. Uses the plural-
+// prefix route /machines/{id}/tasks (yes, the API mixes prefixes).
+func (m *Client) ListTasks(ctx context.Context, machineID int64) ([]MachineTask, error) {
+	if machineID <= 0 {
+		return nil, fmt.Errorf("machines: ListTasks: machineID must be positive")
+	}
+	var env struct {
+		Data []MachineTask `json:"data"`
+	}
+	path := "machines/" + strconv.FormatInt(machineID, 10) + "/tasks"
+	if err := m.get(ctx, path, nil, &env); err != nil {
+		return nil, err
+	}
+	return env.Data, nil
+}
+
+// ListAdventureSteps returns the adventure-mode steps for a machine.
+func (m *Client) ListAdventureSteps(ctx context.Context, machineID int64) ([]AdventureStep, error) {
+	if machineID <= 0 {
+		return nil, fmt.Errorf("machines: ListAdventureSteps: machineID must be positive")
+	}
+	var env struct {
+		Data []AdventureStep `json:"data"`
+	}
+	path := "machines/" + strconv.FormatInt(machineID, 10) + "/adventure"
+	if err := m.get(ctx, path, nil, &env); err != nil {
+		return nil, err
+	}
+	return env.Data, nil
+}
+
+// DownloadOfficialWriteupPDF downloads the official PDF writeup for a
+// machine and writes it to w. Returns the number of bytes copied.
+// Unlike the JSON-returning methods, this one streams the body directly
+// — the response is application/pdf, not JSON.
+func (m *Client) DownloadOfficialWriteupPDF(ctx context.Context, machineID int64, w io.Writer) (int64, error) {
+	if machineID <= 0 {
+		return 0, fmt.Errorf("machines: DownloadOfficialWriteupPDF: machineID must be positive")
+	}
+	if w == nil {
+		return 0, fmt.Errorf("machines: DownloadOfficialWriteupPDF: writer is nil")
+	}
+	path := "machine/writeup/" + strconv.FormatInt(machineID, 10)
+	req, err := m.c.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return 0, err
+	}
+	// Override Accept so a content-negotiating proxy doesn't try to give us JSON.
+	req.Header.Set("Accept", "application/pdf, */*")
+	resp, err := m.c.Do(req)
+	if err != nil {
+		return 0, err
+	}
+	defer func() { _ = resp.Body.Close() }()
+	if resp.StatusCode == http.StatusNotFound {
+		return 0, fmt.Errorf("machines: writeup %d: not found", machineID)
+	}
+	if resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden {
+		return 0, fmt.Errorf("machines: writeup %d: auth failed (%d)", machineID, resp.StatusCode)
+	}
+	if resp.StatusCode >= 400 {
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 4096))
+		return 0, fmt.Errorf("machines: writeup %d: status %d: %s", machineID, resp.StatusCode, string(body))
+	}
+	return io.Copy(w, resp.Body)
 }
 
 // ---------- internals ----------

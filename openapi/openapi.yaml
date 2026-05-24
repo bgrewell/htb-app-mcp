@@ -165,6 +165,169 @@ paths:
         '401': { $ref: '#/components/responses/Unauthorized' }
         '404': { $ref: '#/components/responses/NotFound' }
         '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/walkthroughs/language/list:
+    get:
+      tags: [machines]
+      operationId: listWalkthroughLanguages
+      summary: List languages available for community walkthroughs
+      description: |
+        Returns the enum of languages a community writeup can be tagged
+        with. Used to populate language filters on the walkthroughs UI.
+      responses:
+        '200':
+          description: Language enum.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [info]
+                properties:
+                  info:
+                    type: array
+                    items: { $ref: '#/components/schemas/Language' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/walkthrough/random:
+    get:
+      tags: [machines]
+      operationId: getRandomWalkthroughMachine
+      summary: Get a random machine that has community walkthroughs
+      description: |
+        Returns a minimal machine reference (`id`, `name`, `avatar`)
+        suitable for the "feeling lucky" pattern. The caller is expected
+        to follow up with `getMachineWalkthroughs` for the returned id.
+      responses:
+        '200':
+          description: Random machine reference.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [message]
+                properties:
+                  message: { $ref: '#/components/schemas/MachineRef' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/graph/matrix/{id}:
+    get:
+      tags: [machines]
+      operationId: getMachineGraphMatrix
+      summary: Get the difficulty-category radar matrix for a machine
+      description: |
+        Returns three scored matrices over five categories
+        (ctf, custom, cve, enum, real). Used to render the "rating"
+        radar chart on the machine info page. `aggregate` is the
+        community average, `maker` is the maker-submitted estimate,
+        `user` is the caller's own submitted rating.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: Matrix scores.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [info]
+                properties:
+                  info: { $ref: '#/components/schemas/GraphMatrix' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machine/writeup/{id}:
+    get:
+      tags: [machines]
+      operationId: getOfficialWriteupPDF
+      summary: Download the official PDF writeup for a machine
+      description: |
+        Returns the official writeup as `application/pdf`. Body size
+        observed at ~1.26 MB. Metadata (filename, sha256, ratings) for
+        the same writeup is available via `getMachineWalkthroughs`.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: PDF body.
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machines/{id}/tasks:
+    get:
+      tags: [machines]
+      operationId: listMachineTasks
+      summary: List guided-mode tasks for a machine
+      description: |
+        Each task is one step the user solves to progress through the
+        machine in guided mode. Tasks chain via `prerequisite_id`. When
+        the caller has completed a task, the actual flag value is
+        revealed in the `flag` field — treat as sensitive.
+
+        Note the plural-prefix route (`/machines/...`) — this is a
+        newer router generation; most other machines endpoints are on
+        the singular `/machine/...` prefix.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, format: int64 }
+          description: Numeric machine id.
+      responses:
+        '200':
+          description: Task list.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/MachineTask' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
+  /machines/{id}/adventure:
+    get:
+      tags: [machines]
+      operationId: listMachineAdventureSteps
+      summary: List adventure-mode steps for a machine
+      description: |
+        Adventure mode reduces a machine to its canonical flag-submission
+        progression (e.g. "Submit User Flag", "Submit Root Flag"). When
+        the caller has completed a step, the `flag` field becomes a
+        plaintext indicator that the flag was owned ("User flag owned"
+        / "Root flag owned"), not the flag value itself.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: integer, format: int64 }
+      responses:
+        '200':
+          description: Adventure step list.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: array
+                    items: { $ref: '#/components/schemas/AdventureStep' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '429': { $ref: '#/components/responses/RateLimited' }
   /review/machine/{id}/paginated:
     get:
       tags: [machines]
@@ -508,6 +671,89 @@ components:
         authUserInHelpfulReviews: { type: boolean }
         user_id:    { type: integer, format: int64 }
         user:       { $ref: '#/components/schemas/UserRef' }
+    Language:
+      type: object
+      description: Walkthrough language enum entry.
+      required: [id, full_name, short_name]
+      properties:
+        id:         { type: integer, format: int64 }
+        full_name:  { type: string, description: "Language name in English (e.g. \"Albanian\")." }
+        short_name: { type: string, description: "Two-letter code (e.g. \"AB\"). Casing varies by entry." }
+    MachineRef:
+      type: object
+      description: Minimal machine reference (id + display fields).
+      required: [id]
+      properties:
+        id:     { type: integer, format: int64 }
+        name:   { type: string }
+        avatar: { type: string, nullable: true }
+    MatrixScores:
+      type: object
+      description: |
+        Five-category score block used by the radar chart. Values are
+        floats 0-10 (community average) or integers 0-10 (single-vote
+        maker/user blocks). The five categories are HTB's standard
+        skill axes.
+      properties:
+        ctf:    { type: number }
+        custom: { type: number }
+        cve:    { type: number }
+        enum:   { type: number }
+        real:   { type: number }
+    GraphMatrix:
+      type: object
+      description: Per-machine difficulty radar matrix triple.
+      properties:
+        aggregate: { $ref: '#/components/schemas/MatrixScores' }
+        maker:     { $ref: '#/components/schemas/MatrixScores' }
+        user:      { $ref: '#/components/schemas/MatrixScores' }
+    KindRef:
+      type: object
+      description: HTB's small `{id, text}` discriminator used for task/adventure typing.
+      required: [id, text]
+      properties:
+        id:   { type: integer }
+        text: { type: string }
+    MachineTask:
+      type: object
+      description: |
+        One guided-mode task. **Sensitivity:** the `flag` field contains
+        the actual flag value once the caller has solved the task; it is
+        empty/masked before completion.
+      required: [id, title]
+      properties:
+        id:              { type: integer, format: int64 }
+        title:           { type: string }
+        description:     { type: string }
+        hint:            { type: string, nullable: true }
+        flag:            { type: string, description: "Plaintext flag once completed; empty/null otherwise." }
+        masked_flag:     { type: string, description: "Hint describing the flag shape, e.g. \"32 hex characters\"." }
+        options:
+          type: array
+          description: Multiple-choice options when the task is a quiz. Empty for free-form tasks.
+          items: { type: object, additionalProperties: true }
+        prerequisite_id: { type: integer, format: int64, nullable: true, description: "ID of the task that must be completed before this one is unlocked." }
+        completed:       { type: boolean }
+        task_type:       { $ref: '#/components/schemas/KindRef' }
+        type:            { $ref: '#/components/schemas/KindRef' }
+    AdventureStep:
+      type: object
+      description: |
+        One adventure-mode step. Adventure compresses the machine to the
+        canonical flag-submission flow ("Submit User Flag", "Submit Root
+        Flag"). For these steps the `flag` field is a textual indicator
+        of completion ("User flag owned"), not the flag value.
+      required: [title]
+      properties:
+        id:          { type: integer, format: int64, nullable: true }
+        title:       { type: string }
+        description: { type: string, nullable: true }
+        hint:        { type: string, nullable: true }
+        flag:        { type: string }
+        masked_flag: { type: string }
+        flag_rating: { type: integer }
+        completed:   { type: boolean }
+        type:        { $ref: '#/components/schemas/KindRef' }
     ReviewPage:
       type: object
       description: Paginated review response for `GET /review/machine/{id}/paginated`.

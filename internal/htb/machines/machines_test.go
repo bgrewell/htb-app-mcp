@@ -240,6 +240,145 @@ func TestListReviews_RejectsBadID(t *testing.T) {
 	}
 }
 
+func TestListWalkthroughLanguages(t *testing.T) {
+	c, cleanup := newFixtureClient(t, map[string]string{
+		"machine/walkthroughs/language/list": "list_walkthrough_languages.json",
+	})
+	defer cleanup()
+
+	langs, err := c.ListWalkthroughLanguages(context.Background())
+	if err != nil {
+		t.Fatalf("ListWalkthroughLanguages: %v", err)
+	}
+	if len(langs) == 0 {
+		t.Fatal("expected at least one language")
+	}
+	if langs[0].FullName == "" || langs[0].ShortName == "" {
+		t.Errorf("first language missing fields: %+v", langs[0])
+	}
+}
+
+func TestGetRandomWalkthroughMachine(t *testing.T) {
+	c, cleanup := newFixtureClient(t, map[string]string{
+		"machine/walkthrough/random": "get_walkthrough_random.json",
+	})
+	defer cleanup()
+
+	ref, err := c.GetRandomWalkthroughMachine(context.Background())
+	if err != nil {
+		t.Fatalf("GetRandomWalkthroughMachine: %v", err)
+	}
+	if ref.ID == 0 || ref.Name == "" {
+		t.Errorf("ref = %+v, want non-zero id and name", ref)
+	}
+}
+
+func TestGetGraphMatrix(t *testing.T) {
+	c, cleanup := newFixtureClient(t, map[string]string{
+		"machine/graph/matrix/351": "get_graph_matrix.json",
+	})
+	defer cleanup()
+
+	gm, err := c.GetGraphMatrix(context.Background(), 351)
+	if err != nil {
+		t.Fatalf("GetGraphMatrix: %v", err)
+	}
+	if gm.Aggregate.CTF == 0 && gm.Aggregate.Custom == 0 && gm.Aggregate.Real == 0 {
+		t.Errorf("aggregate scores all zero: %+v", gm.Aggregate)
+	}
+}
+
+func TestGetGraphMatrix_RejectsBadID(t *testing.T) {
+	c := New(nil)
+	if _, err := c.GetGraphMatrix(context.Background(), 0); err == nil {
+		t.Fatal("expected error for machineID=0")
+	}
+}
+
+func TestListTasks(t *testing.T) {
+	c, cleanup := newFixtureClient(t, map[string]string{
+		"machines/351/tasks": "list_machine_tasks.json",
+	})
+	defer cleanup()
+
+	tasks, err := c.ListTasks(context.Background(), 351)
+	if err != nil {
+		t.Fatalf("ListTasks: %v", err)
+	}
+	if len(tasks) < 2 {
+		t.Fatalf("expected several tasks, got %d", len(tasks))
+	}
+	if tasks[0].Title == "" || tasks[0].Description == "" || tasks[0].MaskedFlag == "" {
+		t.Errorf("first task missing fields: %+v", tasks[0])
+	}
+	// Second task should chain off the first via prerequisite_id.
+	if tasks[1].PrerequisiteID == nil || *tasks[1].PrerequisiteID != tasks[0].ID {
+		t.Errorf("expected task[1].prerequisite_id == task[0].id, got %+v", tasks[1].PrerequisiteID)
+	}
+}
+
+func TestListTasks_RejectsBadID(t *testing.T) {
+	c := New(nil)
+	if _, err := c.ListTasks(context.Background(), 0); err == nil {
+		t.Fatal("expected error for machineID=0")
+	}
+}
+
+func TestListAdventureSteps(t *testing.T) {
+	c, cleanup := newFixtureClient(t, map[string]string{
+		"machines/351/adventure": "get_machine_adventure.json",
+	})
+	defer cleanup()
+
+	steps, err := c.ListAdventureSteps(context.Background(), 351)
+	if err != nil {
+		t.Fatalf("ListAdventureSteps: %v", err)
+	}
+	if len(steps) < 2 {
+		t.Fatalf("expected at least 2 adventure steps, got %d", len(steps))
+	}
+	if steps[0].Title != "Submit User Flag" || steps[0].Type.Text != "user" {
+		t.Errorf("step[0] = %+v, want title=Submit User Flag type.text=user", steps[0])
+	}
+	if steps[1].Title != "Submit Root Flag" {
+		t.Errorf("step[1].Title = %q, want Submit Root Flag", steps[1].Title)
+	}
+}
+
+func TestDownloadOfficialWriteupPDF(t *testing.T) {
+	pdfBody := []byte("%PDF-1.4\nfake pdf bytes for test\n%%EOF\n")
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if got := r.Header.Get("Accept"); !strings.Contains(got, "application/pdf") {
+			t.Errorf("Accept = %q, want it to contain application/pdf", got)
+		}
+		w.Header().Set("Content-Type", "application/pdf")
+		_, _ = w.Write(pdfBody)
+	}))
+	defer srv.Close()
+	hc, _ := htb.New(htb.Config{
+		Token: "t", BaseURL: srv.URL + "/api/v4", HTTPClient: srv.Client(), RequestTimeout: time.Second, MaxRetries: 1,
+	})
+
+	var buf strings.Builder
+	n, err := New(hc).DownloadOfficialWriteupPDF(context.Background(), 351, &buf)
+	if err != nil {
+		t.Fatalf("DownloadOfficialWriteupPDF: %v", err)
+	}
+	if int(n) != len(pdfBody) || buf.String() != string(pdfBody) {
+		t.Errorf("got %d bytes, want %d; body match=%v", n, len(pdfBody), buf.String() == string(pdfBody))
+	}
+}
+
+func TestDownloadOfficialWriteupPDF_Rejects(t *testing.T) {
+	c := New(nil)
+	if _, err := c.DownloadOfficialWriteupPDF(context.Background(), 0, &strings.Builder{}); err == nil {
+		t.Fatal("expected error for machineID=0")
+	}
+	if _, err := c.DownloadOfficialWriteupPDF(context.Background(), 1, nil); err == nil {
+		t.Fatal("expected error for nil writer")
+	}
+}
+
 func TestGet_HandlesNotFound(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
