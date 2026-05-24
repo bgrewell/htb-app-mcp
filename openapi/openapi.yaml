@@ -408,8 +408,8 @@ components:
       properties:
         current_page: { type: integer, minimum: 1 }
         per_page:     { type: integer, minimum: 1 }
-        from:         { type: integer, nullable: true }
-        to:           { type: integer, nullable: true }
+        from:         { type: [integer, 'null'] }
+        to:           { type: [integer, 'null'] }
         total:        { type: integer, minimum: 0 }
         last_page:    { type: integer, minimum: 1 }
         path:         { type: string }
@@ -421,16 +421,16 @@ components:
             properties:
               active: { type: boolean }
               label:  { type: string }
-              page:   { type: integer, nullable: true }
-              url:    { type: string, nullable: true }
+              page:   { type: [integer, 'null'] }
+              url:    { type: [string, 'null'] }
     PaginatorLinks:
       type: object
       description: Top-level `links` on a Laravel paginator response.
       properties:
-        first: { type: string, nullable: true }
-        last:  { type: string, nullable: true }
-        next:  { type: string, nullable: true }
-        prev:  { type: string, nullable: true }
+        first: { type: [string, 'null'] }
+        last:  { type: [string, 'null'] }
+        next:  { type: [string, 'null'] }
+        prev:  { type: [string, 'null'] }
     Maker:
       type: object
       description: Machine maker (community contributor who built the box).
@@ -440,13 +440,13 @@ components:
         name:        { type: string }
         avatar:      { type: string }
         isRespected: { type: boolean }
-        profile_url: { type: string, nullable: true }
+        profile_url: { type: [string, 'null'] }
     BloodHolder:
       type: object
       description: User who claimed first user-blood or first root-blood on a machine.
       properties:
         blood_difference: { type: string, description: "Wall-time delta between release and blood, e.g. \"00H 02M 17S\"." }
-        created_at:       { type: string, format: date-time, nullable: true }
+        created_at:       { type: [string, 'null'], format: date-time }
         user:             { $ref: '#/components/schemas/UserRef' }
     UserRef:
       type: object
@@ -455,7 +455,7 @@ components:
       properties:
         id:     { type: integer, format: int64 }
         name:   { type: string }
-        avatar: { type: string, nullable: true }
+        avatar: { type: [string, 'null'] }
     FeedbackChart:
       type: object
       description: Histogram of user-submitted difficulty ratings.
@@ -476,10 +476,10 @@ components:
       properties:
         isSpawned:           { type: boolean }
         isSpawning:          { type: boolean }
-        isActive:            { type: boolean, nullable: true }
-        active_player_count: { type: integer, nullable: true }
-        expires_at:          { type: string, nullable: true }
-        life_remaining:      { type: integer, nullable: true, description: "Seconds remaining on the spawn timer." }
+        isActive:            { type: [boolean, 'null'] }
+        active_player_count: { type: [integer, 'null'] }
+        expires_at:          { type: [string, 'null'] }
+        life_remaining:      { type: [integer, 'null'], description: "Seconds remaining on the spawn timer." }
     SpawnInfo:
       type: object
       description: |
@@ -492,12 +492,12 @@ components:
         name:          { type: string }
         type:          { type: string, description: "Lab classification, e.g. \"Release Arena\"." }
         lab_server:    { type: string, description: "Lab identifier, e.g. \"dedivip_lab\"." }
-        vpn_server_id: { type: integer, format: int64, nullable: true }
-        ip:            { type: string, nullable: true, description: "Spawned machine's lab IP." }
+        vpn_server_id: { type: [integer, 'null'], format: int64 }
+        ip:            { type: [string, 'null'], description: "Spawned machine's lab IP." }
         avatar:        { type: string }
         isSpawning:    { type: boolean }
-        expires_at:    { type: string, nullable: true, description: "Wall-clock time the spawn will be torn down." }
-        tier_id:       { type: integer, nullable: true }
+        expires_at:    { type: [string, 'null'], description: "Wall-clock time the spawn will be torn down." }
+        tier_id:       { type: [integer, 'null'] }
     MachineInfo:
       type: object
       description: |
@@ -521,7 +521,7 @@ components:
         free:                        { type: boolean, description: "Available without VIP." }
         avatar:                      { type: string }
         synopsis:                    { type: string }
-        ip:                          { type: string, nullable: true }
+        ip:                          { type: [string, 'null'] }
         stars:                       { type: number, description: "Average review rating, 0-5." }
         reviews_count:               { type: integer }
         user_owns_count:             { type: integer }
@@ -530,7 +530,7 @@ components:
         rootBlood:                   { $ref: '#/components/schemas/BloodHolder' }
         botHasBlood:                 { type: boolean }
         maker:                       { $ref: '#/components/schemas/Maker' }
-        maker2:                      { allOf: [{ $ref: '#/components/schemas/Maker' }], nullable: true }
+        maker2:            { oneOf: [{ $ref: '#/components/schemas/Maker' }, { type: 'null' }] }
         playInfo:                    { $ref: '#/components/schemas/PlayInfo' }
         feedbackForChart:            { $ref: '#/components/schemas/FeedbackChart' }
         academy_modules:
@@ -539,11 +539,11 @@ components:
           items:
             type: object
             additionalProperties: true
-        info_status:                 { type: string, nullable: true }
-        machinePwnedDate:            { type: string, nullable: true }
-        machine_mode:                { type: string, nullable: true }
-        season_id:                   { type: integer, nullable: true }
-        requiredSubscription:        { type: string, nullable: true }
+        info_status:                 { type: [string, 'null'] }
+        machinePwnedDate:            { type: [string, 'null'] }
+        machine_mode:                { type: [string, 'null'] }
+        season_id:                   { type: [integer, 'null'] }
+        requiredSubscription:        { type: [string, 'null'] }
         priceTier:                   { type: integer }
         start_mode:                  { type: string, description: "How the machine starts (e.g. \"spawn\")." }
         isGuidedEnabled:             { type: boolean }
@@ -554,7 +554,7 @@ components:
         show_go_vip:                 { type: boolean }
         show_go_vip_server:          { type: boolean }
         sp_flag:                     { type: integer }
-        switchServerWarning:         { type: string, nullable: true }
+        switchServerWarning:         { type: [string, 'null'] }
         recommended:                 { type: boolean }
         ownRank:                     { type: integer }
         authUserInUserOwns:          { type: boolean }
@@ -577,7 +577,7 @@ components:
         points:            { type: integer }
         release:           { type: string, format: date-time }
         retired:           { type: integer, description: "0 = active, 1 = retired." }
-        retired_date:      { type: string, format: date-time, nullable: true }
+        retired_date:      { type: [string, 'null'], format: date-time }
         typeCard:          { type: string, description: "Recommendation category, e.g. \"seasonal\", \"staff_pick\"." }
         isTodo:            { type: boolean }
         stars:             { type: integer }
@@ -586,7 +586,7 @@ components:
         authUserInUserOwns: { type: boolean }
         authUserInRootOwns: { type: boolean }
         maker:             { $ref: '#/components/schemas/Maker' }
-        maker2:            { allOf: [{ $ref: '#/components/schemas/Maker' }], nullable: true }
+        maker2:            { oneOf: [{ $ref: '#/components/schemas/Maker' }, { type: 'null' }] }
         feedbackForChart:  { $ref: '#/components/schemas/FeedbackChart' }
     Recommendations:
       type: object
@@ -608,16 +608,16 @@ components:
         rating:                        { type: integer }
         total_ratings:                 { type: integer }
         threshold_for_display_reached: { type: integer }
-        likedByUser:                   { type: boolean, nullable: true }
-        dislikedByUser:                { type: boolean, nullable: true }
+        likedByUser:                   { type: [boolean, 'null'] }
+        dislikedByUser:                { type: [boolean, 'null'] }
     OfficialVideo:
       type: object
       description: Metadata for the official video walkthrough.
       properties:
-        creator_id:     { type: integer, nullable: true }
-        creator_name:   { type: string, nullable: true }
-        creator_avatar: { type: string, nullable: true }
-        youtube_id:     { type: string, nullable: true }
+        creator_id:     { type: [integer, 'null'] }
+        creator_name:   { type: [string, 'null'] }
+        creator_avatar: { type: [string, 'null'] }
+        youtube_id:     { type: [string, 'null'] }
     CommunityWriteup:
       type: object
       description: One community-authored writeup link.
@@ -628,13 +628,13 @@ components:
         rating:           { type: integer, description: "0-100 community rating." }
         total_ratings:    { type: integer }
         created_at:       { type: string, format: date-time }
-        language_code:    { type: string, nullable: true }
-        language_name:    { type: string, nullable: true }
-        liked_by_user:    { type: boolean, nullable: true }
-        disliked_by_user: { type: boolean, nullable: true }
+        language_code:    { type: [string, 'null'] }
+        language_name:    { type: [string, 'null'] }
+        liked_by_user:    { type: [boolean, 'null'] }
+        disliked_by_user: { type: [boolean, 'null'] }
         user_id:          { type: integer, format: int64 }
         user_name:        { type: string, description: "Public username of the writeup author." }
-        user_avatar:      { type: string, nullable: true }
+        user_avatar:      { type: [string, 'null'] }
     WalkthroughsBundle:
       type: object
       description: Composite payload returned by `GET /machine/walkthroughs/{id}`.
@@ -645,8 +645,7 @@ components:
           type: array
           items: { $ref: '#/components/schemas/CommunityWriteup' }
         under_review:
-          type: array
-          nullable: true
+          type: [array, 'null']
           items: { type: object, additionalProperties: true }
     Review:
       type: object
@@ -659,7 +658,7 @@ components:
         headline:   { type: string }
         message:    { type: string }
         review:     { type: string, description: "Same content as `message`. HTB returns both fields." }
-        difficulty: { type: string, nullable: true }
+        difficulty: { type: [string, 'null'] }
         featured:   { type: integer, description: "0/1 flag — review is featured." }
         released:   { type: integer, description: "0/1 flag — purpose currently unclear; observed value 1 on all captured reviews." }
         created_at: { type: string, format: date-time }
@@ -686,7 +685,7 @@ components:
       properties:
         id:     { type: integer, format: int64 }
         name:   { type: string }
-        avatar: { type: string, nullable: true }
+        avatar: { type: [string, 'null'] }
     MatrixScores:
       type: object
       description: |
@@ -725,14 +724,14 @@ components:
         id:              { type: integer, format: int64 }
         title:           { type: string }
         description:     { type: string }
-        hint:            { type: string, nullable: true }
+        hint:            { type: [string, 'null'] }
         flag:            { type: string, description: "Plaintext flag once completed; empty/null otherwise." }
         masked_flag:     { type: string, description: "Hint describing the flag shape, e.g. \"32 hex characters\"." }
         options:
           type: array
           description: Multiple-choice options when the task is a quiz. Empty for free-form tasks.
           items: { type: object, additionalProperties: true }
-        prerequisite_id: { type: integer, format: int64, nullable: true, description: "ID of the task that must be completed before this one is unlocked." }
+        prerequisite_id: { type: [integer, 'null'], format: int64, description: "ID of the task that must be completed before this one is unlocked." }
         completed:       { type: boolean }
         task_type:       { $ref: '#/components/schemas/KindRef' }
         type:            { $ref: '#/components/schemas/KindRef' }
@@ -745,10 +744,10 @@ components:
         of completion ("User flag owned"), not the flag value.
       required: [title]
       properties:
-        id:          { type: integer, format: int64, nullable: true }
+        id:          { type: [integer, 'null'], format: int64 }
         title:       { type: string }
-        description: { type: string, nullable: true }
-        hint:        { type: string, nullable: true }
+        description: { type: [string, 'null'] }
+        hint:        { type: [string, 'null'] }
         flag:        { type: string }
         masked_flag: { type: string }
         flag_rating: { type: integer }
