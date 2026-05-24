@@ -27,6 +27,7 @@ import (
 	"github.com/bgrewell/htb-app-mcp/internal/config"
 	"github.com/bgrewell/htb-app-mcp/internal/htb"
 	"github.com/bgrewell/htb-app-mcp/internal/server"
+	machinestools "github.com/bgrewell/htb-app-mcp/internal/tools/machines"
 )
 
 // version is set at build time via -ldflags "-X main.version=...".
@@ -109,8 +110,9 @@ func run(args []string) error {
 		HTTPClient: httpClient,
 		Version:    version,
 		Logger:     logger,
-		// Registrars: nil — domain tool packages will populate this list
-		// in phases 2 onward. For Phase 1 the binary is bootstrap-only.
+		Registrars: []server.DomainRegistrar{
+			machinestools.Registrar{},
+		},
 	})
 	if err != nil {
 		return err
