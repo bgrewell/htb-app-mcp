@@ -19,6 +19,10 @@ coverage.html
 go.work
 go.work.sum
 
+# Python (capture scripts)
+__pycache__/
+*.pyc
+
 # Vendored deps (we don't vendor)
 /vendor/
 

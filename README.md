@@ -58,7 +58,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md). Work is tracked via issues; PRs cluste
 
 - HackTheBox for the platform and for offering user-generated API tokens that make community tooling possible.
 - [`noaslr/htb-mcp-server`](https://github.com/noaslr/htb-mcp-server) — a Go MCP for a subset of the main app, used as structural reference.
-- [`Propolisa/htb-api-docs`](https://github.com/Propolisa/htb-api-docs) — community-maintained Postman collection that seeds our endpoint inventory.
+- [`Propolisa/htb-api-docs`](https://github.com/Propolisa/htb-api-docs) — community-maintained Postman collection, useful as a hint of which endpoints exist. We do not import schemas from it; every operation in our OpenAPI spec is verified by a fresh capture against the live API.
 - [`modelcontextprotocol/go-sdk`](https://github.com/modelcontextprotocol/go-sdk) — the official Go MCP SDK this server is built on.
 
 This project is **not affiliated with or endorsed by HackTheBox**.

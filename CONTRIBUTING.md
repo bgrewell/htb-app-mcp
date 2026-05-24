@@ -20,7 +20,7 @@ We use a strict **plan → issues → PR clusters → review → merge** loop:
 
 You need:
 
-- Go 1.22+ ([install](https://go.dev/dl/))
+- Go 1.25+ ([install](https://go.dev/dl/)) — required by `modelcontextprotocol/go-sdk`
 - `golangci-lint` ([install](https://golangci-lint.run/usage/install/))
 - `gitleaks` ([install](https://github.com/gitleaks/gitleaks#installing)) — pre-commit secret scanning
 - `redocly` CLI ([install](https://redocly.com/docs/cli/installation)) — OpenAPI linting
