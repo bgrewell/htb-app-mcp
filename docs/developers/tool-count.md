@@ -5,7 +5,7 @@ change that adds or removes a tool must update this file.
 
 | Domain | Tools | Count |
 |--------|-------|-------|
-| machines | `machines_get_active_spawn`, `machines_get_recommended`, `machines_get_info`, `machines_get_walkthroughs`, `machines_list_reviews` | 5 |
+| machines | `machines_get_active_spawn`, `machines_get_recommended`, `machines_get_info`, `machines_get_walkthroughs`, `machines_list_reviews`, `machines_list_walkthrough_languages`, `machines_get_random_walkthrough_machine`, `machines_get_graph_matrix`, `machines_list_tasks`, `machines_list_adventure_steps`, `machines_save_official_writeup_pdf` | 11 |
 | challenges | _not implemented yet_ | 0 |
 | sherlocks | _not implemented yet_ | 0 |
 | profile | _not implemented yet_ | 0 |
@@ -16,7 +16,7 @@ change that adds or removes a tool must update this file.
 | seasons | _not implemented yet_ | 0 |
 | vpn | _not implemented yet_ | 0 |
 | search | _not implemented yet_ | 0 |
-| **Total (all enabled)** | | **5** |
+| **Total (all enabled)** | | **11** |
 
 ## Discipline
 
@@ -32,15 +32,21 @@ change that adds or removes a tool must update this file.
 Rough target ceilings per domain so a user enabling all domains stays
 near or below 25 active tools:
 
-| Domain | Target ceiling |
-|--------|----------------|
-| machines | 8 |
-| challenges | 5 |
-| sherlocks | 4 |
-| profile + rankings + tracks combined | 4 |
-| pro-labs + fortresses + seasons combined | 3 |
-| vpn + search combined | 2 |
-| **Total** | **~26** |
+| Domain | Original target | Current |
+|--------|----------------|---------|
+| machines | 8 | 11 (over by 3) |
+| challenges | 5 | — |
+| sherlocks | 4 | — |
+| profile + rankings + tracks combined | 4 | — |
+| pro-labs + fortresses + seasons combined | 3 | — |
+| vpn + search combined | 2 | — |
+| **Total** | **~26** | — |
 
-These are guidelines, not hard caps. Revisit when the first three
-domains have shipped.
+Machines is currently over the 8-tool target because the first PR
+documents the full captured read-only surface (per the
+"document the API in totality" principle) rather than curating to a
+subset. Revisit once challenges + sherlocks ship and we can see how
+the sum trends. If totals cross 25, the first consolidation candidates
+are likely: collapse `list_walkthrough_languages` +
+`get_random_walkthrough_machine` into one rarely-used "walkthrough
+discovery" tool, or move them out of the default-enabled set.

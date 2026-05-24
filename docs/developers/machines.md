@@ -30,8 +30,13 @@ through `mitmdump -s scripts/capture/mitm_capture.py`, scrubbed via
 | `list_recommended.json` | `GET /machine/recommended` | `getRecommendedMachines`, `machines_get_recommended` |
 | `get_info_by_name.json` | `GET /machine/profile/Cap` | `getMachineInfo`, `machines_get_info` |
 | `list_walkthroughs.json` | `GET /machine/walkthroughs/351` | `getMachineWalkthroughs`, `machines_get_walkthroughs` |
-| `get_writeup.json` | `GET /machine/writeup/351` | not yet wired — see notes below |
+| `get_writeup.json` | `GET /machine/writeup/351` | `getOfficialWriteupPDF`, `machines_save_official_writeup_pdf` |
 | `list_reviews.json` | `GET /review/machine/351/paginated?...` | `listMachineReviews`, `machines_list_reviews` |
+| `list_walkthrough_languages.json` | `GET /machine/walkthroughs/language/list` | `listWalkthroughLanguages`, `machines_list_walkthrough_languages` |
+| `get_walkthrough_random.json` | `GET /machine/walkthrough/random` | `getRandomWalkthroughMachine`, `machines_get_random_walkthrough_machine` |
+| `get_graph_matrix.json` | `GET /machine/graph/matrix/351` | `getMachineGraphMatrix`, `machines_get_graph_matrix` |
+| `list_machine_tasks.json` | `GET /machines/351/tasks` | `listMachineTasks`, `machines_list_tasks` |
+| `get_machine_adventure.json` | `GET /machines/351/adventure` | `listMachineAdventureSteps`, `machines_list_adventure_steps` |
 
 ## Envelope conventions
 
@@ -62,9 +67,16 @@ have to thread the envelope name through every call site.
 - **Reviews has a custom envelope.** Laravel paginator (`data, meta,
   links`) plus two custom top-level fields: `average` (stars across all
   reviews) and `count` (total review count).
-- **`/machine/writeup/{id}` returns `application/pdf`.** The capture
-  body is non-JSON (1.26 MB). Not exposed as an MCP tool in this PR;
-  needs a download-URL-plus-metadata wrapper.
+- **`/machine/writeup/{id}` returns `application/pdf`.** The body is
+  non-JSON (1.26 MB observed). The client exposes
+  `DownloadOfficialWriteupPDF` which streams to an `io.Writer`; the
+  MCP tool `machines_save_official_writeup_pdf` wraps it to save into
+  a local directory and return the file path.
+- **Sensitive fields in task/adventure responses.** The `flag` field
+  on a completed `MachineTask` contains the actual plaintext flag
+  value. For `AdventureStep` it is a textual indicator ("User flag
+  owned"). Documented in the schema descriptions; tool descriptions
+  warn the caller.
 
 ## Field-required policy
 

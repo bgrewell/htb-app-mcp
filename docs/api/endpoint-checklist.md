@@ -26,13 +26,13 @@ and verified before it lands in `openapi/openapi.yaml`.
 | `/machine/recommended` | GET | documented | propolisa, ours | Returns `{card1, card2, state[]}` — two recommendation cards, not a list. |
 | `/machine/profile/{name}` | GET | documented | ours | Lookup by name (not id). Returns `{info: {...}}`. |
 | `/machine/walkthroughs/{id}` | GET | documented | ours | Walkthroughs for a machine. |
-| `/machine/walkthroughs/language/list` | GET | probe | ours (raw only) | Walkthrough language enum. Captured but not yet in first PR. |
-| `/machine/walkthrough/random` | GET | probe | ours (raw only) | Random walkthrough across all machines. |
-| `/machine/writeup/{id}` | GET | captured | ours | Official writeup — `application/pdf`, 1.26 MB. Needs download-URL-plus-metadata wrapper before exposing as a tool. |
-| `/machine/graph/matrix/{id}` | GET | probe | ours (raw only) | Stats matrix. Captured but not yet in first PR. |
+| `/machine/walkthroughs/language/list` | GET | documented | ours | Walkthrough language enum. |
+| `/machine/walkthrough/random` | GET | documented | ours | Random machine that has walkthroughs. |
+| `/machine/writeup/{id}` | GET | documented | ours | Official writeup — `application/pdf`, 1.26 MB. Exposed via `machines_save_official_writeup_pdf`. |
+| `/machine/graph/matrix/{id}` | GET | documented | ours | Difficulty radar matrix (aggregate/maker/user across five axes). |
 | `/review/machine/{id}/paginated` | GET | documented | ours | Reviews. Laravel paginator: `{data, meta, links, average, count}`. |
-| `/machines/{id}/tasks` | GET | probe | ours (raw only) | Plural-prefix route. Purpose unclear without more probing. |
-| `/machines/{id}/adventure` | GET | probe | ours (raw only) | Plural-prefix route. Purpose unclear without more probing. |
+| `/machines/{id}/tasks` | GET | documented | ours | Plural-prefix route. Guided-mode tasks; flag field carries plaintext flag value once solved. |
+| `/machines/{id}/adventure` | GET | documented | ours | Plural-prefix route. Canonical flag-submission progression (Submit User/Root Flag). |
 | `/machine/list` | GET | probe | propolisa | Active-list per Propolisa. Has not been observed in our captures — Propolisa may be stale. Probe to confirm whether it still exists. |
 | `/machine/list/retired` | GET | probe | propolisa | Retired-list per Propolisa. Same caveat. |
 | `/machine/list/retired/paginated/?per_page=N` | GET | probe | noaslr | What noaslr uses for retired list today (Jul 2025). |

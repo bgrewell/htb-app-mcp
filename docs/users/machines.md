@@ -12,8 +12,11 @@ challenges lands.
 
 ## Tools
 
-This is the cluster shipped in the first machines PR. Lifecycle
-(spawn / stop / extend) and flag submission ship in follow-up PRs.
+This is the first machines PR. It covers the full read-only surface we
+captured: spawn-status, recommendations, info, walkthroughs, reviews,
+guided/adventure progression, official writeup download, and a couple
+of small lookups. Lifecycle (spawn / stop / extend) and flag
+submission ship in follow-up PRs once those endpoints are captured.
 
 ### `machines_get_active_spawn`
 
@@ -80,14 +83,75 @@ Laravel paginator envelope.
 
 Example: "Show me the latest 20 reviews of machine 351."
 
+### `machines_list_walkthrough_languages`
+
+Returns the enum of languages community writeups can be tagged with.
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| _none_   |      |          |       |
+
+### `machines_get_random_walkthrough_machine`
+
+Returns a random machine reference (`id`, `name`, `avatar`) that has
+community walkthroughs. Typically followed by `machines_get_walkthroughs`.
+
+| Argument | Type | Required | Notes |
+|----------|------|----------|-------|
+| _none_   |      |          |       |
+
+### `machines_get_graph_matrix`
+
+Returns the difficulty radar matrix for a machine. Three score blocks
+(aggregate / maker / user) across five skill axes (ctf, custom, cve,
+enum, real).
+
+| Argument     | Type    | Required | Notes |
+|--------------|---------|----------|-------|
+| `machine_id` | integer | yes      | Numeric id from `machines_get_info`. |
+
+### `machines_list_tasks`
+
+Returns guided-mode tasks for a machine. Each task chains via
+`prerequisite_id`.
+
+| Argument     | Type    | Required | Notes |
+|--------------|---------|----------|-------|
+| `machine_id` | integer | yes      | Numeric id from `machines_get_info`. |
+
+**Sensitivity:** the `flag` field contains the actual plaintext flag
+value for any task the caller has already completed. Treat the response
+as user-progress data — do not paste it into shared chats or logs.
+
+### `machines_list_adventure_steps`
+
+Returns adventure-mode steps for a machine (typically `Submit User Flag`
+and `Submit Root Flag`). The `flag` field on completed steps is a
+textual indicator (e.g. `"User flag owned"`), not the flag value.
+
+| Argument     | Type    | Required | Notes |
+|--------------|---------|----------|-------|
+| `machine_id` | integer | yes      | Numeric id from `machines_get_info`. |
+
+### `machines_save_official_writeup_pdf`
+
+Downloads the official PDF writeup and saves it to a directory. Returns
+the saved path and byte count. Useful for bulk-downloading a writeup
+library locally.
+
+| Argument     | Type    | Required | Notes |
+|--------------|---------|----------|-------|
+| `machine_id` | integer | yes      | Numeric id from `machines_get_info`. |
+| `output_dir` | string  | yes      | Absolute path to an existing writable directory. |
+| `filename`   | string  | no       | Defaults to `machine_<id>.pdf`. |
+
+Example: "Save the writeup for machine 351 to ~/htb-writeups/."
+
 ## What is intentionally not here
 
 - **Spawn / stop / extend / reset.** Lifecycle is a separate cluster
   PR, gated on capturing the lifecycle endpoints (`/machine/play/{id}`,
   `/machine/terminate`, ...).
 - **Flag submission.** Same — separate cluster.
-- **The official PDF writeup.** `/machine/writeup/{id}` returns a 1+ MB
-  PDF and needs a different response handling strategy. Tracked in
-  `docs/api/endpoint-checklist.md`.
 - **General "list all machines"** (active / retired / by-OS / search).
-  Not captured in this PR. Tracked in the checklist.
+  Not captured in this PR. Tracked in `docs/api/endpoint-checklist.md`.
