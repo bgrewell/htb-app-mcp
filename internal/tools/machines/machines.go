@@ -6,6 +6,9 @@ package machines
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"strconv"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
@@ -85,7 +88,100 @@ func (Registrar) Register(s *mcp.Server, c *htb.Client, _ *config.Config) error 
 		return nil, p, err
 	})
 
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "machines_list_walkthrough_languages",
+		Description: "List the language enum used to tag community walkthroughs. Useful when the caller wants to filter walkthroughs by language.",
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, _ noInput) (*mcp.CallToolResult, *languagesOut, error) {
+		ls, err := mc.ListWalkthroughLanguages(ctx)
+		if err != nil {
+			return nil, nil, err
+		}
+		return nil, &languagesOut{Languages: ls}, nil
+	})
+
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "machines_get_random_walkthrough_machine",
+		Description: "Get a random HackTheBox machine that has community walkthroughs. Returns a minimal reference (id, name, avatar). Caller typically follows up with machines_get_walkthroughs.",
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, _ noInput) (*mcp.CallToolResult, *htbmachines.MachineRef, error) {
+		r, err := mc.GetRandomWalkthroughMachine(ctx)
+		return nil, r, err
+	})
+
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "machines_get_graph_matrix",
+		Description: "Get the difficulty radar matrix for a HackTheBox machine by its numeric id. Returns scores across five skill axes (ctf, custom, cve, enum, real) for aggregate, maker, and the caller themselves.",
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, in machineIDInput) (*mcp.CallToolResult, *htbmachines.GraphMatrix, error) {
+		gm, err := mc.GetGraphMatrix(ctx, in.MachineID)
+		return nil, gm, err
+	})
+
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "machines_list_tasks",
+		Description: "List guided-mode tasks for a HackTheBox machine by its numeric id. SENSITIVITY: the `flag` field contains the actual plaintext flag value for any task the caller has already completed. Tasks chain via `prerequisite_id`.",
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, in machineIDInput) (*mcp.CallToolResult, *tasksOut, error) {
+		ts, err := mc.ListTasks(ctx, in.MachineID)
+		if err != nil {
+			return nil, nil, err
+		}
+		return nil, &tasksOut{Tasks: ts}, nil
+	})
+
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "machines_list_adventure_steps",
+		Description: "List adventure-mode steps for a HackTheBox machine by its numeric id. Adventure compresses the machine to canonical flag-submission steps (typically Submit User Flag, Submit Root Flag).",
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, in machineIDInput) (*mcp.CallToolResult, *adventureOut, error) {
+		ss, err := mc.ListAdventureSteps(ctx, in.MachineID)
+		if err != nil {
+			return nil, nil, err
+		}
+		return nil, &adventureOut{Steps: ss}, nil
+	})
+
+	mcp.AddTool(s, &mcp.Tool{
+		Name:        "machines_save_official_writeup_pdf",
+		Description: "Download the official PDF writeup for a HackTheBox machine and save it to a directory on the local filesystem. The directory must exist and be writable. Returns the full path of the saved file. Useful for bulk-downloading writeups to a local library.",
+	}, func(ctx context.Context, _ *mcp.CallToolRequest, in saveWriteupInput) (*mcp.CallToolResult, *saveWriteupOut, error) {
+		return saveWriteupHandler(ctx, mc, in)
+	})
+
 	return nil
+}
+
+// saveWriteupHandler validates the output directory, opens a destination
+// file, streams the PDF body into it, and returns the saved path.
+func saveWriteupHandler(ctx context.Context, mc *htbmachines.Client, in saveWriteupInput) (*mcp.CallToolResult, *saveWriteupOut, error) {
+	if in.OutputDir == "" {
+		return nil, nil, fmt.Errorf("output_dir is required")
+	}
+	if in.MachineID <= 0 {
+		return nil, nil, fmt.Errorf("machine_id must be positive")
+	}
+	info, err := os.Stat(in.OutputDir)
+	if err != nil {
+		return nil, nil, fmt.Errorf("output_dir %q: %w", in.OutputDir, err)
+	}
+	if !info.IsDir() {
+		return nil, nil, fmt.Errorf("output_dir %q is not a directory", in.OutputDir)
+	}
+	name := in.Filename
+	if name == "" {
+		name = "machine_" + strconv.FormatInt(in.MachineID, 10) + ".pdf"
+	}
+	out := filepath.Join(in.OutputDir, name)
+	f, err := os.Create(out)
+	if err != nil {
+		return nil, nil, fmt.Errorf("create %q: %w", out, err)
+	}
+	n, copyErr := mc.DownloadOfficialWriteupPDF(ctx, in.MachineID, f)
+	closeErr := f.Close()
+	if copyErr != nil {
+		_ = os.Remove(out)
+		return nil, nil, copyErr
+	}
+	if closeErr != nil {
+		return nil, nil, fmt.Errorf("close %q: %w", out, closeErr)
+	}
+	return nil, &saveWriteupOut{Path: out, Bytes: n}, nil
 }
 
 // ---------- tool input shapes (jsonschema is auto-derived by the SDK) ----------
@@ -106,4 +202,26 @@ type listReviewsInput struct {
 	PerPage   int      `json:"per_page,omitempty" jsonschema:"results per page (default 15)"`
 	SortType  string   `json:"sort_type,omitempty" jsonschema:"sort direction: asc or desc (default desc)"`
 	SortBy    []string `json:"sort_by,omitempty" jsonschema:"sort field names, repeatable; observed value: created_at"`
+}
+
+type saveWriteupInput struct {
+	MachineID int64  `json:"machine_id" jsonschema:"numeric machine id"`
+	OutputDir string `json:"output_dir" jsonschema:"absolute path to an existing writable directory where the PDF will be saved"`
+	Filename  string `json:"filename,omitempty" jsonschema:"optional filename for the PDF; defaults to machine_<id>.pdf"`
+}
+
+// Output wrappers — the SDK requires a struct (not a bare slice) for
+// structured tool output so the JSON Schema has a named root.
+type languagesOut struct {
+	Languages []htbmachines.Language `json:"languages"`
+}
+type tasksOut struct {
+	Tasks []htbmachines.MachineTask `json:"tasks"`
+}
+type adventureOut struct {
+	Steps []htbmachines.AdventureStep `json:"steps"`
+}
+type saveWriteupOut struct {
+	Path  string `json:"path" jsonschema:"absolute path of the saved PDF"`
+	Bytes int64  `json:"bytes" jsonschema:"number of bytes written"`
 }
