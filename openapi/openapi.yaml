@@ -488,14 +488,25 @@ components:
     Review:
       type: object
       description: One user review of a machine.
-      required: [id]
+      required: [id, user]
       properties:
         id:         { type: integer, format: int64 }
         stars:      { type: integer, minimum: 1, maximum: 5 }
-        message:    { type: string, nullable: true }
-        released:   { type: string, format: date-time }
-        helpful:    { type: integer, description: "Helpful-vote count." }
-        unhelpful:  { type: integer, description: "Unhelpful-vote count." }
+        title:      { type: string }
+        headline:   { type: string }
+        message:    { type: string }
+        review:     { type: string, description: "Same content as `message`. HTB returns both fields." }
+        difficulty: { type: string, nullable: true }
+        featured:   { type: integer, description: "0/1 flag — review is featured." }
+        released:   { type: integer, description: "0/1 flag — purpose currently unclear; observed value 1 on all captured reviews." }
+        created_at: { type: string, format: date-time }
+        helpful_reviews_count: { type: integer }
+        helpful_reviews:
+          type: array
+          description: Helpful-vote records. Shape not yet captured.
+          items: { type: object, additionalProperties: true }
+        authUserInHelpfulReviews: { type: boolean }
+        user_id:    { type: integer, format: int64 }
         user:       { $ref: '#/components/schemas/UserRef' }
     ReviewPage:
       type: object
