@@ -1,0 +1,492 @@
+{
+  "request": {
+    "body": null,
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.5",
+      "authorization": "<redacted>",
+      "origin": "https://app.hackthebox.com",
+      "priority": "u=0",
+      "referer": "https://app.hackthebox.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "te": "trailers",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    },
+    "method": "GET",
+    "path": "/api/v4/review/machine/351/paginated?sort_by%5B%5D=created_at&sort_type=desc&per_page=15",
+    "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?sort_by%5B%5D=created_at&sort_type=desc&per_page=15"
+  },
+  "response": {
+    "body": {
+      "average": 4.6,
+      "count": 3558,
+      "data": [
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-21T02:58:45.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Review",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 548418,
+          "message": "I liked, I am new in HTB and liked how it works the guided mode.",
+          "released": 1,
+          "review": "I liked, I am new in HTB and liked how it works the guided mode.",
+          "stars": 5,
+          "title": "Review",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/66686d67-be64-4bd1-9a80-e04c30b130ad-avatar.png",
+            "id": 3455592,
+            "name": "example_user"
+          },
+          "user_id": 3455592
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-19T16:24:56.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Interesting Machine",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 547755,
+          "message": "I did get confused on some parts but overall this is a pretty easy machine",
+          "released": 1,
+          "review": "I did get confused on some parts but overall this is a pretty easy machine",
+          "stars": 5,
+          "title": "Interesting Machine",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/91af159c-4d67-43e3-b0c9-14f204f4a90f-avatar.png",
+            "id": 2387780,
+            "name": "example_user"
+          },
+          "user_id": 2387780
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-19T12:50:49.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "GREAT MACHINE FOR A STARTER",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 547638,
+          "message": "Couldn`t be happier to kick off my HTB life, then with this machine. 5 Stars all the way.",
+          "released": 1,
+          "review": "Couldn`t be happier to kick off my HTB life, then with this machine. 5 Stars all the way.",
+          "stars": 5,
+          "title": "GREAT MACHINE FOR A STARTER",
+          "user": {
+            "avatar": null,
+            "id": 2445956,
+            "name": "example_user"
+          },
+          "user_id": 2445956
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-18T18:17:32.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "had a great time solving!",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 547164,
+          "message": "GOOD! I had a great time solving!",
+          "released": 1,
+          "review": "GOOD! I had a great time solving!",
+          "stars": 5,
+          "title": "had a great time solving!",
+          "user": {
+            "avatar": null,
+            "id": 3463827,
+            "name": "example_user"
+          },
+          "user_id": 3463827
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-17T18:39:01.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "good",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 546570,
+          "message": "i really enjoyed this one \ud83d\udd25\ud83d\udd25\ud83d\udd25\ud83d\udd25\ud83d\udd25\ud83d\udd25",
+          "released": 1,
+          "review": "i really enjoyed this one \ud83d\udd25\ud83d\udd25\ud83d\udd25\ud83d\udd25\ud83d\udd25\ud83d\udd25",
+          "stars": 5,
+          "title": "good",
+          "user": {
+            "avatar": null,
+            "id": 3484293,
+            "name": "example_user"
+          },
+          "user_id": 3484293
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-15T10:25:11.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Good introduction to Linux Cap",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 545349,
+          "message": "Very good introduction to Linux Capabilities with getcap, didn't know about the existence of that command and I think it can be quite useful in real attacks.",
+          "released": 1,
+          "review": "Very good introduction to Linux Capabilities with getcap, didn't know about the existence of that command and I think it can be quite useful in real attacks.",
+          "stars": 4,
+          "title": "Good introduction to Linux Cap",
+          "user": {
+            "avatar": null,
+            "id": 3505656,
+            "name": "example_user"
+          },
+          "user_id": 3505656
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-14T21:57:46.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Clean IDOR \u2192 pcap \u2192 cap_setuid. Worth doing.",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 545175,
+          "message": "Solid first real box after Starting Point.",
+          "released": 1,
+          "review": "Solid first real box after Starting Point.",
+          "stars": 4,
+          "title": "Clean IDOR \u2192 pcap \u2192 cap_setuid. Worth doing.",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/f05018a9-d75a-4750-804d-21e032787e67-avatar.png",
+            "id": 121102,
+            "name": "example_user"
+          },
+          "user_id": 121102
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-13T15:17:12.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "amazing",
+          "helpful_reviews": [
+            {
+              "id": 13002,
+              "review_id": 544464,
+              "user_id": 3520092
+            }
+          ],
+          "helpful_reviews_count": 1,
+          "id": 544464,
+          "message": "it was not easy for me actully",
+          "released": 1,
+          "review": "it was not easy for me actully",
+          "stars": 5,
+          "title": "amazing",
+          "user": {
+            "avatar": null,
+            "id": 2922598,
+            "name": "example_user"
+          },
+          "user_id": 2922598
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-13T05:15:36.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Good one",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 544260,
+          "message": "nice to play ,keep continue on",
+          "released": 1,
+          "review": "nice to play ,keep continue on",
+          "stars": 5,
+          "title": "Good one",
+          "user": {
+            "avatar": null,
+            "id": 2913625,
+            "name": "example_user"
+          },
+          "user_id": 2913625
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-12T20:35:11.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Great Machine to understand pentesting methodology",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 544149,
+          "message": "At first I felt a bit overwhelmed and lost, but then I payed attention to the questions that I had to solve and it was helpful to encounter the exploitation path. I enjoyed the privesc part with python.",
+          "released": 1,
+          "review": "At first I felt a bit overwhelmed and lost, but then I payed attention to the questions that I had to solve and it was helpful to encounter the exploitation path. I enjoyed the privesc part with python.",
+          "stars": 4,
+          "title": "Great Machine to understand pentesting methodology",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/f3134f5a-cd60-4097-9732-eece6d9009fc-avatar.png",
+            "id": 3218314,
+            "name": "example_user"
+          },
+          "user_id": 3218314
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-12T17:23:37.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "fun",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 544065,
+          "message": "it took me a bit, but i figured it out and it was fun machine",
+          "released": 1,
+          "review": "it took me a bit, but i figured it out and it was fun machine",
+          "stars": 5,
+          "title": "fun",
+          "user": {
+            "avatar": null,
+            "id": 3296787,
+            "name": "example_user"
+          },
+          "user_id": 3296787
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-12T15:29:36.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Perfect for Beginners",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 543999,
+          "message": "First machine that i have completed, very good for beginners",
+          "released": 1,
+          "review": "First machine that i have completed, very good for beginners",
+          "stars": 4,
+          "title": "Perfect for Beginners",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/a708c176-cfa6-485f-a50d-0f132ba67388-avatar.png",
+            "id": 379057,
+            "name": "example_user"
+          },
+          "user_id": 379057
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-11T16:43:24.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Interesting",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 543546,
+          "message": "Really interesting and fun machine.\nNeed to have a bit of linux terminal knowledge to acomplish it",
+          "released": 1,
+          "review": "Really interesting and fun machine.\nNeed to have a bit of linux terminal knowledge to acomplish it",
+          "stars": 4,
+          "title": "Interesting",
+          "user": {
+            "avatar": null,
+            "id": 3476139,
+            "name": "example_user"
+          },
+          "user_id": 3476139
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-11T03:15:01.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Cap - review",
+          "helpful_reviews": [],
+          "helpful_reviews_count": 0,
+          "id": 543327,
+          "message": "Nice one, I didn't know some things like ffuf, also it took me a while but just because internet issues.",
+          "released": 1,
+          "review": "Nice one, I didn't know some things like ffuf, also it took me a while but just because internet issues.",
+          "stars": 4,
+          "title": "Cap - review",
+          "user": {
+            "avatar": null,
+            "id": 3478878,
+            "name": "example_user"
+          },
+          "user_id": 3478878
+        },
+        {
+          "authUserInHelpfulReviews": false,
+          "created_at": "2026-05-11T00:37:41.000000Z",
+          "difficulty": null,
+          "featured": 0,
+          "headline": "Nice",
+          "helpful_reviews": [
+            {
+              "id": 12789,
+              "review_id": 543297,
+              "user_id": 3495687
+            },
+            {
+              "id": 12936,
+              "review_id": 543297,
+              "user_id": 3514410
+            }
+          ],
+          "helpful_reviews_count": 2,
+          "id": 543297,
+          "message": "pretty easy machine, only used very basic pentesting skills",
+          "released": 1,
+          "review": "pretty easy machine, only used very basic pentesting skills",
+          "stars": 5,
+          "title": "Nice",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/ca673d3d-c63f-44b6-ab6b-8313f5c009f3-avatar.png",
+            "id": 298566,
+            "name": "example_user"
+          },
+          "user_id": 298566
+        }
+      ],
+      "links": {
+        "first": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=1",
+        "last": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=63",
+        "next": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=2",
+        "prev": null
+      },
+      "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 63,
+        "links": [
+          {
+            "active": false,
+            "label": "&laquo; Previous",
+            "page": null,
+            "url": null
+          },
+          {
+            "active": true,
+            "label": "1",
+            "page": 1,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=1"
+          },
+          {
+            "active": false,
+            "label": "2",
+            "page": 2,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=2"
+          },
+          {
+            "active": false,
+            "label": "3",
+            "page": 3,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=3"
+          },
+          {
+            "active": false,
+            "label": "4",
+            "page": 4,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=4"
+          },
+          {
+            "active": false,
+            "label": "5",
+            "page": 5,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=5"
+          },
+          {
+            "active": false,
+            "label": "6",
+            "page": 6,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=6"
+          },
+          {
+            "active": false,
+            "label": "7",
+            "page": 7,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=7"
+          },
+          {
+            "active": false,
+            "label": "8",
+            "page": 8,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=8"
+          },
+          {
+            "active": false,
+            "label": "9",
+            "page": 9,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=9"
+          },
+          {
+            "active": false,
+            "label": "10",
+            "page": 10,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=10"
+          },
+          {
+            "active": false,
+            "label": "...",
+            "url": null
+          },
+          {
+            "active": false,
+            "label": "62",
+            "page": 62,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=62"
+          },
+          {
+            "active": false,
+            "label": "63",
+            "page": 63,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=63"
+          },
+          {
+            "active": false,
+            "label": "Next &raquo;",
+            "page": 2,
+            "url": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated?page=2"
+          }
+        ],
+        "path": "https://labs.hackthebox.com/api/v4/review/machine/351/paginated",
+        "per_page": 15,
+        "to": 15,
+        "total": 944
+      }
+    },
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "https://app.hackthebox.com",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "no-cache, private",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a00cc6129e6053d9-PDX",
+      "content-encoding": "gzip",
+      "content-type": "application/json",
+      "date": "Sun, 24 May 2026 13:51:12 GMT",
+      "server": "cloudflare",
+      "set-cookie": "<redacted>",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "vary": "accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "x-htb-request-id": "a1db4167-b7e4-4520-80df-58307ccc6d3a",
+      "x-ratelimit-limit": "15",
+      "x-ratelimit-remaining": "14",
+      "x-xss-protection": "1; mode=block"
+    },
+    "status": 200
+  }
+}

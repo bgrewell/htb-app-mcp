@@ -1,0 +1,283 @@
+{
+  "request": {
+    "body": null,
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.5",
+      "authorization": "<redacted>",
+      "origin": "https://app.hackthebox.com",
+      "referer": "https://app.hackthebox.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "te": "trailers",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    },
+    "method": "GET",
+    "path": "/api/v4/machine/profile/Cap",
+    "url": "https://labs.hackthebox.com/api/v4/machine/profile/Cap"
+  },
+  "response": {
+    "body": {
+      "info": {
+        "academy_modules": [
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/19/avatar.png",
+            "difficulty": {
+              "color": "success",
+              "id": 3,
+              "level": 3,
+              "text": "Easy",
+              "title": "Easy"
+            },
+            "id": 19,
+            "logo": "https://academy.hackthebox.com/storage/modules/19/logo.png",
+            "name": "Network Enumeration with Nmap",
+            "tier": {
+              "color": "success",
+              "id": 2,
+              "name": "Tier I",
+              "number": 1
+            },
+            "url": "https://academy.hackthebox.com/module/details/19"
+          },
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/51/avatar.png",
+            "difficulty": {
+              "color": "success",
+              "id": 3,
+              "level": 3,
+              "text": "Easy",
+              "title": "Easy"
+            },
+            "id": 51,
+            "logo": "https://academy.hackthebox.com/storage/modules/51/logo.png",
+            "name": "Linux Privilege Escalation",
+            "tier": {
+              "color": "info",
+              "id": 3,
+              "name": "Tier II",
+              "number": 2
+            },
+            "url": "https://academy.hackthebox.com/module/details/51"
+          },
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/81/avatar.png",
+            "difficulty": {
+              "color": "warning",
+              "id": 6,
+              "level": 6,
+              "text": "Medium",
+              "title": "Medium"
+            },
+            "id": 81,
+            "logo": "https://academy.hackthebox.com/storage/modules/81/logo.png",
+            "name": "Intro to Network Traffic Analysis",
+            "tier": {
+              "color": "dark",
+              "id": 1,
+              "name": "Tier 0",
+              "number": 0
+            },
+            "url": "https://academy.hackthebox.com/module/details/81"
+          },
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/134/avatar.png",
+            "difficulty": {
+              "color": "warning",
+              "id": 6,
+              "level": 6,
+              "text": "Medium",
+              "title": "Medium"
+            },
+            "id": 134,
+            "logo": "https://academy.hackthebox.com/storage/modules/134/logo.png",
+            "name": "Web Attacks",
+            "tier": {
+              "color": "info",
+              "id": 3,
+              "name": "Tier II",
+              "number": 2
+            },
+            "url": "https://academy.hackthebox.com/module/details/134"
+          },
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/34/avatar.png",
+            "difficulty": {
+              "color": "success",
+              "id": 1,
+              "level": 1,
+              "text": "Fundamental",
+              "title": "Fundamental"
+            },
+            "id": 34,
+            "logo": "https://academy.hackthebox.com/storage/modules/34/logo.png",
+            "name": "Introduction to Networking",
+            "tier": {
+              "color": "dark",
+              "id": 1,
+              "name": "Tier 0",
+              "number": 0
+            },
+            "url": "https://academy.hackthebox.com/module/details/34"
+          },
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/77/avatar.png",
+            "difficulty": {
+              "color": "success",
+              "id": 1,
+              "level": 1,
+              "text": "Fundamental",
+              "title": "Fundamental"
+            },
+            "id": 77,
+            "logo": "https://academy.hackthebox.com/storage/modules/77/logo.png",
+            "name": "Getting Started",
+            "tier": {
+              "color": "dark",
+              "id": 1,
+              "name": "Tier 0",
+              "number": 0
+            },
+            "url": "https://academy.hackthebox.com/module/details/77"
+          },
+          {
+            "avatar": "https://academy.hackthebox.com/storage/modules/18/avatar.png",
+            "difficulty": {
+              "color": "success",
+              "id": 1,
+              "level": 1,
+              "text": "Fundamental",
+              "title": "Fundamental"
+            },
+            "id": 18,
+            "logo": "https://academy.hackthebox.com/storage/modules/18/logo.png",
+            "name": "Linux Fundamentals",
+            "tier": {
+              "color": "dark",
+              "id": 1,
+              "name": "Tier 0",
+              "number": 0
+            },
+            "url": "https://academy.hackthebox.com/module/details/18"
+          }
+        ],
+        "active": false,
+        "authUserFirstRootTime": "3Y 8M 28D",
+        "authUserFirstUserTime": "3Y 8M 28D",
+        "authUserHasReviewed": false,
+        "authUserHasSubmittedMatrix": true,
+        "authUserInRootOwns": true,
+        "authUserInUserOwns": true,
+        "avatar": "/avatars/70ea3357a2d090af11a0953ec8717e90.png",
+        "botHasBlood": false,
+        "can_access_walkthrough": true,
+        "difficultyText": "Easy",
+        "experience_points": 450,
+        "feedbackForChart": {
+          "counterBitHard": 1662,
+          "counterBrainFuck": 373,
+          "counterCake": 18819,
+          "counterEasy": 35749,
+          "counterExHard": 97,
+          "counterHard": 1035,
+          "counterMedium": 6873,
+          "counterTooEasy": 12555,
+          "counterTooHard": 247,
+          "counterVeryEasy": 21225
+        },
+        "free": true,
+        "has_changelog": true,
+        "id": 351,
+        "info_status": null,
+        "ip": "10.129.2.134",
+        "isGuidedEnabled": true,
+        "isSingleFlag": false,
+        "isTodo": false,
+        "machinePwnedDate": "2025-03-04 00:04:43",
+        "machine_mode": null,
+        "maker": {
+          "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/aa2e5194-ffe2-4d2d-b4fb-78120c423862-avatar.png",
+          "id": 52045,
+          "isRespected": false,
+          "name": "example_user",
+          "profile_url": "https://app.hackthebox.com/profile/52045"
+        },
+        "maker2": null,
+        "name": "Cap",
+        "os": "Linux",
+        "ownRank": 44830,
+        "playInfo": {
+          "active_player_count": 0,
+          "expires_at": null,
+          "isActive": false,
+          "isSpawned": null,
+          "isSpawning": false,
+          "life_remaining": null
+        },
+        "points": 0,
+        "priceTier": 1,
+        "recommended": true,
+        "release": "2021-06-05T19:00:00.000Z",
+        "requiredSubscription": null,
+        "retired": true,
+        "reviews_count": 3558,
+        "rootBlood": {
+          "blood_difference": "0H 4M 44S",
+          "created_at": "2021-06-05T19:04:44.000Z",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/fd97fab8-31dd-432c-a870-a04069527009-avatar.png",
+            "id": 139466,
+            "name": "example_user"
+          }
+        },
+        "root_owns_count": 90768,
+        "season_id": null,
+        "show_go_vip": false,
+        "show_go_vip_server": false,
+        "sp_flag": 0,
+        "stars": 4.6,
+        "start_mode": "spawn",
+        "static_points": 20,
+        "switchServerWarning": null,
+        "synopsis": "Cap is an easy difficulty Linux machine running an HTTP server that performs administrative functions including performing network captures. Improper controls result in Insecure Direct Object Reference (IDOR) giving access to another user's capture. The capture contains plaintext credentials and can be used to gain foothold. A Linux capability is then leveraged to escalate to root.",
+        "userBlood": {
+          "blood_difference": "0H 3M 38S",
+          "created_at": "2021-06-05T19:03:38.000Z",
+          "user": {
+            "avatar": "https://htb-sso-prod-public-storage.s3.eu-central-1.amazonaws.com/users/fd97fab8-31dd-432c-a870-a04069527009-avatar.png",
+            "id": 139466,
+            "name": "example_user"
+          }
+        },
+        "user_can_review": true,
+        "user_owns_count": 98735
+      }
+    },
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "https://app.hackthebox.com",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "no-cache, private",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a00cc5f5defa53d9-PDX",
+      "content-encoding": "gzip",
+      "content-type": "application/json",
+      "date": "Sun, 24 May 2026 13:51:07 GMT",
+      "server": "cloudflare",
+      "set-cookie": "<redacted>",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "vary": "accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "x-htb-request-id": "a1db4160-26d9-418f-ba06-f9376c4526c6",
+      "x-ratelimit-limit": "30",
+      "x-ratelimit-remaining": "28",
+      "x-xss-protection": "1; mode=block"
+    },
+    "status": 200
+  }
+}
