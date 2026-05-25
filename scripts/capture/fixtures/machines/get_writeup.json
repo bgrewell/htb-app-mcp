@@ -1,0 +1,53 @@
+{
+  "request": {
+    "body": null,
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.5",
+      "authorization": "<redacted>",
+      "origin": "https://app.hackthebox.com",
+      "priority": "u=0",
+      "referer": "https://app.hackthebox.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "te": "trailers",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    },
+    "method": "GET",
+    "path": "/api/v4/machine/writeup/351",
+    "url": "https://labs.hackthebox.com/api/v4/machine/writeup/351"
+  },
+  "response": {
+    "body": {
+      "_non_json": true,
+      "len": 1264972
+    },
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "https://app.hackthebox.com",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "no-cache, private",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a00cc6e94f3153d9-PDX",
+      "content-disposition": "attachment; filename=Cap.pdf",
+      "content-length": "1264972",
+      "content-type": "application/pdf",
+      "date": "Sun, 24 May 2026 13:51:46 GMT",
+      "server": "cloudflare",
+      "set-cookie": "<redacted>",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "vary": "accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "x-htb-request-id": "a1db419b-9305-41c5-a9dd-2c932439e88a",
+      "x-ratelimit-limit": "15",
+      "x-ratelimit-remaining": "14",
+      "x-xss-protection": "1; mode=block"
+    },
+    "status": 200
+  }
+}

@@ -1,0 +1,224 @@
+{
+  "request": {
+    "body": null,
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.5",
+      "authorization": "<redacted>",
+      "origin": "https://app.hackthebox.com",
+      "referer": "https://app.hackthebox.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "te": "trailers",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    },
+    "method": "GET",
+    "path": "/api/v4/machines/351/tasks",
+    "url": "https://labs.hackthebox.com/api/v4/machines/351/tasks"
+  },
+  "response": {
+    "body": {
+      "data": [
+        {
+          "completed": true,
+          "description": "How many TCP ports are open?",
+          "flag": "3",
+          "hint": "Scan the host with `nmap`.",
+          "id": 652,
+          "masked_flag": "number, such as 3, 17, or 4567",
+          "options": [],
+          "prerequisite_id": null,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 1",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "After running a \"Security Snapshot\", the browser is redirected to a path of the format `/[something]/[id]`, where `[id]` represents the id number of the scan. What is the `[something]`?",
+          "flag": "data",
+          "hint": "Run a scan and look at the URL of the page you are redirected to. This part is the same every time.",
+          "id": 653,
+          "masked_flag": "****",
+          "options": [],
+          "prerequisite_id": 652,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 2",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "Are you able to get to other users' scans?",
+          "flag": "yes",
+          "hint": "Try modifying the URL and see what happens. You could also fuzz with a tool like `ffuf` or `wfuzz`.",
+          "id": 654,
+          "masked_flag": "yes or no",
+          "options": [],
+          "prerequisite_id": 653,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 3",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "What is the ID of the PCAP file that contains sensative data?",
+          "flag": "0",
+          "hint": "Download PCAP files and take a look.",
+          "id": 655,
+          "masked_flag": "number, such as 3, 17, or 4567",
+          "options": [],
+          "prerequisite_id": 654,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 4",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "Which application layer protocol in the pcap file can the sensetive data be found in?",
+          "flag": "ftp",
+          "hint": "It has to do with one of the other open TCP ports on Cap.",
+          "id": 656,
+          "masked_flag": "***",
+          "options": [],
+          "prerequisite_id": 655,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 5",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "We've managed to collect nathan's FTP password. On what other service does this password work?",
+          "flag": "ssh",
+          "hint": "Try using the password on other services.",
+          "id": 657,
+          "masked_flag": "***",
+          "options": [],
+          "prerequisite_id": 656,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 6",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "Submit the flag located in the nathan user's home directory.",
+          "flag": "User flag owned",
+          "flag_rating": 2,
+          "hint": null,
+          "id": 658,
+          "masked_flag": "32 hex characters",
+          "options": [],
+          "prerequisite_id": null,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Submit User Flag",
+          "type": {
+            "id": 1,
+            "text": "user"
+          }
+        },
+        {
+          "completed": true,
+          "description": "What is the full path to the binary on this machine has special capabilities that can be abused to obtain root privileges?",
+          "flag": "/usr/bin/python3.8",
+          "hint": "[linPEAS](https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS) will show this in the 'Files with capabilities' section of the output. Or use the `getcap` binary on Cap.",
+          "id": 659,
+          "masked_flag": "full path of file",
+          "options": [],
+          "prerequisite_id": 658,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Task 8",
+          "type": {
+            "id": 0,
+            "text": "task"
+          }
+        },
+        {
+          "completed": true,
+          "description": "Submit the flag located in root's home directory.",
+          "flag": "Root flag owned",
+          "flag_rating": 3,
+          "hint": null,
+          "id": 660,
+          "masked_flag": "32 hex characters",
+          "options": [],
+          "prerequisite_id": null,
+          "task_type": {
+            "id": 0,
+            "text": "text"
+          },
+          "title": "Submit Root Flag",
+          "type": {
+            "id": 2,
+            "text": "root"
+          }
+        }
+      ]
+    },
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "https://app.hackthebox.com",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "no-cache, private",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a00cc5fafd7853d9-PDX",
+      "content-encoding": "gzip",
+      "content-type": "application/json",
+      "date": "Sun, 24 May 2026 13:51:08 GMT",
+      "server": "cloudflare",
+      "set-cookie": "<redacted>",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "vary": "accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "x-htb-request-id": "a1db4161-7362-44f8-a4bc-1a317fea69bf",
+      "x-ratelimit-limit": "50",
+      "x-ratelimit-remaining": "42",
+      "x-xss-protection": "1; mode=block"
+    },
+    "status": 200
+  }
+}

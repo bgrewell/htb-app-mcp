@@ -1,0 +1,72 @@
+{
+  "request": {
+    "body": null,
+    "headers": {
+      "accept": "application/json, text/plain, */*",
+      "accept-encoding": "gzip, deflate, br, zstd",
+      "accept-language": "en-US,en;q=0.5",
+      "authorization": "<redacted>",
+      "origin": "https://app.hackthebox.com",
+      "referer": "https://app.hackthebox.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "te": "trailers",
+      "user-agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
+    },
+    "method": "GET",
+    "path": "/api/v4/machine/graph/matrix/351",
+    "url": "https://labs.hackthebox.com/api/v4/machine/graph/matrix/351"
+  },
+  "response": {
+    "body": {
+      "info": {
+        "aggregate": {
+          "ctf": 5.9,
+          "custom": 5.5,
+          "cve": 4.5,
+          "enum": 4.8,
+          "real": 4.1
+        },
+        "maker": {
+          "ctf": 8,
+          "custom": 3,
+          "cve": 7,
+          "enum": 2,
+          "real": 2
+        },
+        "user": {
+          "ctf": 5,
+          "custom": 9,
+          "cve": 1,
+          "enum": 6,
+          "real": 5
+        }
+      }
+    },
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With",
+      "access-control-allow-methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "access-control-allow-origin": "https://app.hackthebox.com",
+      "alt-svc": "h3=\":443\"; ma=86400",
+      "cache-control": "no-cache, private",
+      "cf-cache-status": "DYNAMIC",
+      "cf-ray": "a00cc5fabd1853d9-PDX",
+      "content-encoding": "gzip",
+      "content-type": "application/json",
+      "date": "Sun, 24 May 2026 13:51:08 GMT",
+      "server": "cloudflare",
+      "set-cookie": "<redacted>",
+      "strict-transport-security": "max-age=15552000; includeSubDomains",
+      "vary": "accept-encoding",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "x-htb-request-id": "a1db4161-5c82-4b93-8e19-0719b86ec6b8",
+      "x-ratelimit-limit": "30",
+      "x-ratelimit-remaining": "25",
+      "x-xss-protection": "1; mode=block"
+    },
+    "status": 200
+  }
+}

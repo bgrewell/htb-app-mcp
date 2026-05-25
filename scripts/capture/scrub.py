@@ -8,14 +8,20 @@ Usage:
     python scripts/capture/scrub.py --domain machines scripts/capture/raw/GET__api_v4_machine_list__*.json
 
 Rules applied:
- - Strip the Authorization header from request.headers.
- - Strip Set-Cookie and Cookie from headers.
- - Replace any value matching a known PII pattern (email, JWT, long opaque
-   token) with a placeholder string.
- - Replace request/response top-level "user", "name", "email", "team" keys
-   with stable placeholders so examples remain useful but anonymous.
- - Leave numeric IDs as-is (they are public for machines/challenges and
-   meaningful in examples). If an ID is yours alone, edit it manually.
+ - Strip the Authorization, Cookie, and Set-Cookie headers.
+ - Replace any value matching a known PII pattern (email, JWT) with a
+   placeholder string.
+ - Replace identifying fields (name, username, email, team_name) ONLY when
+   nested under a user-identifying parent key (user, profile, maker,
+   author, owner, member, creator, created_by, opener, players, ranks).
+   A bare top-level "name" is left alone because most HTB resources
+   (machine, challenge, sherlock, team) use "name" for the resource name
+   itself, which is public information.
+ - Leave numeric IDs as-is. Most are public (machine/challenge IDs).
+   If an ID is uniquely yours, edit the fixture manually.
+
+The scrub is conservative and not infallible. ALWAYS read the scrubbed
+fixture before committing it.
 
 The script will refuse to overwrite an existing fixture. Use --force to
 override.
@@ -37,10 +43,31 @@ PII_HEADERS = {"authorization", "cookie", "set-cookie", "x-csrf-token"}
 
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}")
 JWT_RE = re.compile(r"eyJ[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+\.[A-Za-z0-9_\-]+")
-LONG_TOKEN_RE = re.compile(r"\b[A-Za-z0-9_\-]{40,}\b")
 
+# Keys whose direct children are treated as identifying a person. The "name"
+# / "username" / "email" / "team_name" replacements only fire when the parent
+# key is in this set. This avoids stomping on machine names, challenge names,
+# tag names, OS names, etc.
+USER_CONTEXT_KEYS = {
+    "user",
+    "profile",
+    "maker",
+    "maker2",
+    "author",
+    "owner",
+    "member",
+    "creator",
+    "created_by",
+    "opener",
+    "first_user_blood",
+    "first_root_blood",
+    "first_blood",
+    "added_by",
+}
+
+# Field replacements applied only inside a USER_CONTEXT_KEYS parent.
 PII_FIELD_REPLACEMENTS = {
-    "name": "Example User",
+    "name": "example_user",
     "user_name": "example_user",
     "username": "example_user",
     "email": "user@example.com",
@@ -51,7 +78,6 @@ PII_FIELD_REPLACEMENTS = {
 def _scrub_string(s: str) -> str:
     s = EMAIL_RE.sub("user@example.com", s)
     s = JWT_RE.sub("<jwt>", s)
-    s = LONG_TOKEN_RE.sub("<token>", s)
     return s
 
 
@@ -65,15 +91,24 @@ def _scrub_headers(headers: dict[str, str]) -> dict[str, str]:
     return out
 
 
-def _scrub_value(value: Any, key: str | None = None) -> Any:
-    if key is not None and key in PII_FIELD_REPLACEMENTS and isinstance(value, str):
+def _scrub_value(value: Any, in_user_context: bool = False, key: str | None = None) -> Any:
+    if (
+        in_user_context
+        and key is not None
+        and key in PII_FIELD_REPLACEMENTS
+        and isinstance(value, str)
+    ):
         return PII_FIELD_REPLACEMENTS[key]
     if isinstance(value, str):
         return _scrub_string(value)
     if isinstance(value, list):
-        return [_scrub_value(v) for v in value]
+        return [_scrub_value(v, in_user_context=in_user_context) for v in value]
     if isinstance(value, dict):
-        return {k: _scrub_value(v, k) for k, v in value.items()}
+        out = {}
+        for k, v in value.items():
+            child_user_context = in_user_context or (k in USER_CONTEXT_KEYS)
+            out[k] = _scrub_value(v, in_user_context=child_user_context, key=k)
+        return out
     return value
 
 
